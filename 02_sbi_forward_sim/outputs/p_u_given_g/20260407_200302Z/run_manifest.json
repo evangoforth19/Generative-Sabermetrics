@@ -1,0 +1,40 @@
+{
+  "timestamp_utc": "20260407_200302Z",
+  "git_hash": null,
+  "config_path": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/configs/p_u_given_g_native_circular_long.yaml",
+  "feature_contract_id": "p_u_given_g_stage_u_v1",
+  "feature_contract_path": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/configs/feature_contracts/p_u_given_g_feature_contract.json",
+  "feature_contract_copied_to_run": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_u_given_g/20260407_200302Z/feature_contract_frozen.json",
+  "row_counts": {
+    "n_rows_train": 1074750,
+    "n_rows_cal": 228000,
+    "n_rows_test": 232250
+  },
+  "event_counts": {
+    "n_events_train": 4299,
+    "n_events_cal": 912,
+    "n_events_test": 929
+  },
+  "draw_cap_per_event": 16,
+  "batch_events": 64,
+  "event_balanced_batching": true,
+  "player_constant_stats_computed_train_only": [
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "training_wall_seconds": 464.5855174064636,
+  "train_loop_seconds": 67.58175945281982,
+  "train_total_seconds_including_calibration": 463.54870438575745,
+  "head_family": "shared_gaussian_vm_d",
+  "covariance_temperature_T": null,
+  "covariance_temperature_T_va": 1.2202284336090088,
+  "covariance_temperature_T_mix": null,
+  "angular_temperature_T_ang": 0.8091964721679688,
+  "nll_calibration_weighted_pre_temp": 2.3750260144790807,
+  "nll_calibration_weighted_post_temp": 2.358351823246017,
+  "nll_test_weighted_post_temp": 2.3797200603768136
+}

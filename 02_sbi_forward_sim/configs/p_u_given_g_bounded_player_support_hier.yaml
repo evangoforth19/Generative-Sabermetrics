@@ -1,0 +1,151 @@
+# Stage-u: player-specific train-only bounds, val_select/temp_cal split, hierarchical MDN.
+# head_family: bounded_player_support_hier_shared_gaussian_vm_d (NOT canonical).
+
+paths:
+  u_train: "data_processed/u_train.parquet"
+  u_calibration: "data_processed/u_calibration.parquet"
+  u_test: "data_processed/u_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_u_given_g_feature_contract.json"
+
+targets:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_spin_rate
+  - spin_axis_sin
+  - spin_axis_cos
+  - release_speed
+
+player_constant_features:
+  - bat_length_in
+  - bat_weight_oz
+  - x_cm_fixed_in
+  - r_g_fixed_in
+  - I0_oz_in2
+  - Iz_oz_in2
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+  stand: { embedding_dim: 4 }
+  p_throws: { embedding_dim: 4 }
+
+weight_column: "combined_training_weight"
+
+target_transform:
+  va_transform: player_specific_bounded_logit_zscore
+  eps: 1.0e-5
+  zscore_scope: global_train_after_logit
+  raw_space_nll_with_jacobian: true
+
+bounds:
+  player_specific:
+    enabled: true
+    fit_split: train
+    player_col: batter_name
+    min_events_for_player_bounds: 20
+    min_rows_for_player_bounds: 100
+    fallback: global_train_bounds
+    padding:
+      v_ss_tilde_abs: 0.0
+      a_tilde_abs: 0.0
+      d_tilde_deg: 0.0
+    attack_angle_global_cap: [-45.0, 45.0]
+  global_sanity_caps:
+    v_ss_tilde: [20.0, 110.0]
+    a_tilde: [-45.0, 45.0]
+  d_tilde_support:
+    mode: circular_arc
+    full_circle_threshold_deg: 350.0
+    sampling_policy: rejection_with_resample_cap
+    rejection_resample_cap: 100
+    fallback_if_rejection_fails: project_to_arc
+  allow_train_clipping_above_threshold: true
+  train_clipping_warning_threshold: 0.01
+
+validation:
+  split_calibration_for_model_selection: true
+  val_select_fraction: 0.5
+  split_seed: 20260408
+  selection_metric: weighted_nll_pre_temperature
+  use_event_level_split: true
+  final_test_selected_only: true
+
+model:
+  head_family: bounded_player_support_hier_shared_gaussian_vm_d
+  n_mixture_components: 6
+  hidden_width: 64
+  hidden_layers: 2
+  activation: tanh
+  dropout: 0.0
+  player_embedding_dim: 8
+  player_effect_scale: 1.0
+  kappa_floor: 1.0e-3
+  kappa_max: 120.0
+
+covariance:
+  chol_eps: 1.0e-4
+  diag_floor: 0.05
+  diag_ceiling: 5.0
+  use_diag_ceiling: true
+  offdiag_tanh_scale: 2.0
+
+regularization:
+  optimizer_weight_decay: 3.0e-4
+  lambda_player_embedding_l2: 1.0e-3
+  lambda_player_adapter_l2: 1.0e-4
+  lambda_cholesky_offdiag_l2: 1.0e-4
+  lambda_log_scale_l2: 1.0e-5
+  lambda_mixture_entropy: 0.0
+  report_effective_components: true
+
+training:
+  seed: 44
+  max_epochs: 120
+  early_stopping_patience: 16
+  early_stopping_metric: val_select_weighted_nll
+  lr: 8.0e-4
+  weight_decay: 3.0e-4
+  batch_events: 64
+  max_draws_per_event: 16
+  grad_clip: 5.0
+  eval_calibration_every: 1
+
+calibration:
+  fit_temperatures: true
+  split: u_temp_cal
+  max_iter: 600
+  steps: 600
+  lr: 0.05
+
+evaluation:
+  report_raw_space_nll_with_jacobian: true
+  report_model_space_nll: true
+  report_player_diagnostics: true
+  report_mixture_diagnostics: true
+  report_covariance_diagnostics: true
+  report_bounds_diagnostics: true
+  report_circular_support_diagnostics: true
+  n_mc_coverage_draws_d: 256
+
+sweep:
+  enabled: false
+  fit_temperature_for_candidates: false
+  final_test_selected_only: true
+  grid:
+    model.n_mixture_components: [6, 8]
+    model.player_embedding_dim: [4, 8]
+    regularization.lambda_player_embedding_l2: [1.0e-4, 1.0e-3]
+    covariance.diag_floor: [0.03, 0.05]
+    training.lr: [8.0e-4]
+
+outputs:
+  run_dir: "outputs/p_u_given_g"

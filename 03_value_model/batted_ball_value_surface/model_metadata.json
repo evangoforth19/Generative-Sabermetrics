@@ -1,0 +1,49 @@
+{
+  "data_path": "/home/evangoforth03/Bayesian Research/data/statcast_pybaseball/statcast_all.parquet",
+  "n_rows_loaded": 280398,
+  "n_rows_after_filter": 45080,
+  "feature_columns": [
+    "launch_speed",
+    "launch_angle",
+    "sin_spray_angle",
+    "cos_spray_angle"
+  ],
+  "class_order": [
+    "out",
+    "single",
+    "double",
+    "triple",
+    "home_run"
+  ],
+  "split_method": "stratified 70% / 15% / 15% (fallback: chronological split not viable)",
+  "train_size": 31556,
+  "val_size": 6762,
+  "test_size": 6762,
+  "hyperparameters": {
+    "n_estimators": 1000,
+    "learning_rate": 0.03,
+    "num_leaves": 63,
+    "max_depth": -1,
+    "min_child_samples": 200,
+    "subsample": 0.8,
+    "colsample_bytree": 0.9,
+    "reg_alpha": 0.1,
+    "reg_lambda": 1.0,
+    "class_weight": "balanced"
+  },
+  "class_weighting": "balanced (LGBMClassifier)",
+  "class_to_idx": {
+    "out": 0,
+    "single": 1,
+    "double": 2,
+    "triple": 3,
+    "home_run": 4
+  },
+  "idx_to_class": {
+    "0": "out",
+    "1": "single",
+    "2": "double",
+    "3": "triple",
+    "4": "home_run"
+  }
+}

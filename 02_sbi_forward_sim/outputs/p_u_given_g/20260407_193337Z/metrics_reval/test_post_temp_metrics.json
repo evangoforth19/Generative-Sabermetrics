@@ -1,0 +1,147 @@
+{
+  "n_rows": 232250,
+  "weighted_nll": 2.3674903224857973,
+  "unweighted_nll": 2.3509854871669806,
+  "mae_raw": [
+    2.906750202178955,
+    5.628282070159912,
+    18.96146011352539
+  ],
+  "rmse_raw": [
+    3.869077205657959,
+    7.201627254486084,
+    22.791231155395508
+  ],
+  "target_names": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "coverage_50_marginal": [
+    0.586828887462616,
+    0.5592163801193237,
+    0.5201377868652344
+  ],
+  "coverage_80_marginal": [
+    0.8723617196083069,
+    0.857606053352356,
+    NaN
+  ],
+  "coverage_90_marginal": [
+    0.936714768409729,
+    0.9378041625022888,
+    NaN
+  ],
+  "interval_width_50_raw_mean": [
+    5.829164981842041,
+    10.768305778503418,
+    NaN
+  ],
+  "interval_width_80_raw_mean": [
+    11.075594902038574,
+    20.460119247436523,
+    NaN
+  ],
+  "interval_width_90_raw_mean": [
+    14.215371131896973,
+    26.260271072387695,
+    NaN
+  ],
+  "avg_pred_std_marginal_raw": [
+    4.4146952629089355,
+    8.077376365661621,
+    11.650588035583496
+  ],
+  "empirical_std_raw": [
+    5.44288444519043,
+    7.678122043609619,
+    23.972919464111328
+  ],
+  "mean_predicted_corr": [
+    [
+      1.0,
+      0.10859974473714828,
+      0.0
+    ],
+    [
+      0.10859974473714828,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "pit_hist_counts": [
+    [
+      7730,
+      11817,
+      13565,
+      11234,
+      10923,
+      9058,
+      9262,
+      13373,
+      15245,
+      11786,
+      15325,
+      11454,
+      11544,
+      12789,
+      13541,
+      11696,
+      14955,
+      9795,
+      7097,
+      10061
+    ],
+    [
+      8017,
+      9899,
+      13973,
+      14171,
+      13597,
+      11887,
+      15423,
+      12823,
+      12886,
+      10410,
+      12239,
+      10594,
+      11769,
+      12116,
+      7902,
+      11069,
+      11461,
+      10440,
+      9107,
+      12467
+    ],
+    [
+      9821,
+      11236,
+      11189,
+      10559,
+      10428,
+      12420,
+      14047,
+      13887,
+      14382,
+      11202,
+      11263,
+      11809,
+      12451,
+      11207,
+      9387,
+      11574,
+      11532,
+      11971,
+      11731,
+      10154
+    ]
+  ],
+  "d_tilde_mc_samples_for_coverage": 256,
+  "eval_note": "Shared \u03c0_k: (v_ss,a) mixture Gaussian marginals; d_tilde von Mises mixture; d PIT via scipy vonmises.cdf; d MAE uses wrapped deg error vs mixture circular mean; d nominal 50% via MC central interval on wrapped samples; d marginal 80/90 coverage and widths omitted (NaN). mean_predicted_corr[:2,:2] is a \u03c0_k-weighted average of within-component correlations only (no v/a\u2013d cross terms reported)."
+}

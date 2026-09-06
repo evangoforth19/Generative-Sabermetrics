@@ -1,0 +1,71 @@
+{
+  "physics_decoder_input_manifest": "manifests/physics_decoder_input_contract.json",
+  "g": [
+    "z_count",
+    "release_speed",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "plate_x",
+    "plate_z",
+    "pitch_type",
+    "stand",
+    "p_throws",
+    "vx0",
+    "vy0",
+    "vz0",
+    "ax",
+    "ay",
+    "az"
+  ],
+  "p": [
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "u": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "z": [
+    "x",
+    "psi_deg",
+    "e_y_star",
+    "theta_deg"
+  ],
+  "z_theta_column": "theta_deg",
+  "z_theta_provenance": "Per draw: `theta_deg` = finite `theta_star_deg` if available, else `theta_obs_deg` from `launch_angle_obs_deg`; never `phi_star`.",
+  "production_latent_note": "Broader posterior-bank exports may include e_x, omega_plus, etc. on long draws; the SBI forward simulator stage-z target vector is only Z_TARGET_COLUMNS; nuisance collision quantities are implied by the deterministic decoder.",
+  "decoder_context_g_note": "Frozen neural models use `g` = G_COLUMNS. The physics decoder enforces a stricter event context dict (e.g. requires release_pos_y for bank contact-time parity); see manifests/physics_decoder_input_contract.json. Do not assume G_COLUMNS alone suffices for decode_bip_from_sample.",
+  "y": [
+    "EV",
+    "LA",
+    "SA"
+  ],
+  "notes": {
+    "release_speed": "True Statcast mph merged from batter_data pickle on (game_date, batter, pitcher, pitch_number); no ||v|| proxy.",
+    "theta_deg": "Canonical stage-z launch angle: per draw, finite theta_star_deg else theta_obs_deg; never phi_star.",
+    "psi_deg": "Canonical name; sourced from psi_deg or psi (if degrees) in production draws."
+  },
+  "z_theta_row_stats": {
+    "basic": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 1535000
+    },
+    "strict": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 9500
+    },
+    "raw": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 1535000
+    }
+  }
+}

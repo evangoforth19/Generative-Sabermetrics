@@ -1,0 +1,63 @@
+calibration:
+  lr: 0.05
+  max_iter: 600
+categorical_features:
+  batter_name:
+    embedding_dim: 16
+  p_throws:
+    embedding_dim: 4
+  pitch_type:
+    embedding_dim: 8
+  stand:
+    embedding_dim: 4
+model:
+  activation: tanh
+  chol_eps: 1.0e-05
+  head_family: shared_gaussian_vm_d
+  hidden_layers: 2
+  hidden_width: 64
+  kappa_floor: 0.001
+  kappa_max: 120.0
+  n_mixture_components: 10
+numeric_features:
+- z_count
+- plate_x
+- plate_z
+- release_spin_rate
+- spin_axis_sin
+- spin_axis_cos
+- release_speed
+outputs:
+  run_dir: outputs/p_u_given_g
+paths:
+  context_master: data_processed/sbi_context_event_master.parquet
+  event_split_table: data_processed/event_split_table.parquet
+  feature_contract: configs/feature_contracts/p_u_given_g_feature_contract.json
+  standardization_stats: manifests/standardization_stats.json
+  u_calibration: data_processed/u_calibration.parquet
+  u_test: data_processed/u_test.parquet
+  u_train: data_processed/u_train.parquet
+player_constant_features:
+- bat_length_in
+- bat_weight_oz
+- x_cm_fixed_in
+- r_g_fixed_in
+- I0_oz_in2
+- Iz_oz_in2
+targets:
+- v_ss_tilde
+- a_tilde
+- d_tilde
+training:
+  batch_events: 64
+  dropout: 0.0
+  early_stopping_metric: calibration_weighted_nll
+  early_stopping_patience: 16
+  eval_calibration_every: 1
+  grad_clip: 5.0
+  lr: 0.0008
+  max_draws_per_event: 16
+  max_epochs: 130
+  seed: 43
+  weight_decay: 0.0001
+weight_column: combined_training_weight

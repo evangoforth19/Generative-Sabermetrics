@@ -1,0 +1,106 @@
+[
+  {
+    "round": 1,
+    "n_admissible_total": 1498,
+    "n_admissible_round": 1498,
+    "n_attempted_joint_round": 1536,
+    "mean_xwobacon": 0.571862917034995,
+    "converged": false
+  },
+  {
+    "round": 2,
+    "n_admissible_total": 3489,
+    "n_admissible_round": 1991,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5425760624005155,
+    "converged": false
+  },
+  {
+    "round": 3,
+    "n_admissible_total": 5477,
+    "n_admissible_round": 1988,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5619215795128375,
+    "converged": false
+  },
+  {
+    "round": 4,
+    "n_admissible_total": 7454,
+    "n_admissible_round": 1977,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.547713268011044,
+    "converged": false
+  },
+  {
+    "round": 5,
+    "n_admissible_total": 9427,
+    "n_admissible_round": 1973,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5597574395045058,
+    "converged": false
+  },
+  {
+    "round": 6,
+    "n_admissible_total": 11423,
+    "n_admissible_round": 1996,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5453695182165391,
+    "converged": false
+  },
+  {
+    "round": 7,
+    "n_admissible_total": 13405,
+    "n_admissible_round": 1982,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.550391529809831,
+    "converged": false
+  },
+  {
+    "round": 8,
+    "n_admissible_total": 15399,
+    "n_admissible_round": 1994,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5484897299751307,
+    "converged": false
+  },
+  {
+    "round": 9,
+    "n_admissible_total": 17388,
+    "n_admissible_round": 1989,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5429571578582656,
+    "converged": false
+  },
+  {
+    "round": 10,
+    "n_admissible_total": 19376,
+    "n_admissible_round": 1988,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5445984625081387,
+    "converged": false
+  },
+  {
+    "round": 11,
+    "n_admissible_total": 21373,
+    "n_admissible_round": 1997,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5485569617052671,
+    "converged": false
+  },
+  {
+    "round": 12,
+    "n_admissible_total": 23364,
+    "n_admissible_round": 1991,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5522256212433383,
+    "converged": false
+  },
+  {
+    "round": 13,
+    "n_admissible_total": 25353,
+    "n_admissible_round": 1989,
+    "n_attempted_joint_round": 2048,
+    "mean_xwobacon": 0.5464354488655055,
+    "converged": true
+  }
+]

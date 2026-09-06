@@ -1,0 +1,16 @@
+Pitch-Type Robustness Report
+============================
+Hitters processed: 11
+Bottom-k rule: ceil(0.10 * n_clusters) per hitter
+
+Top by Pitch-Type Robustness Score: Giancarlo Stanton (0.5996)
+Top by lowest Vulnerability Gap: Kris Bryant (0.0780)
+Top by Robust Value Score: Giancarlo Stanton (0.6558)
+
+Interpretation:
+- mean_pitch_value: average cluster mean value across all pitch designs.
+- pitch_type_robustness_score: mean of bottom 10% cluster means (downside floor); higher is better.
+- vulnerability_gap: average minus floor; lower means less exploitable downside.
+
+Warnings:
+- Expected hitters missing from processed output: ['Pete Alonso']

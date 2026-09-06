@@ -1,0 +1,12 @@
+{
+  "train_frac": 0.7,
+  "calibration_frac": 0.15,
+  "test_frac": 0.15,
+  "seed": 42,
+  "n_events": 6654,
+  "counts_by_split": {
+    "train": 4651,
+    "test": 1010,
+    "calibration": 993
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "contract_id": "p_z_given_u_g_stage_z_v1",
+  "description": "Frozen stage-z feature contract for p(z|u,g,p). Neural inputs exclude vx0..az; release_speed is Statcast merge only.",
+  "targets": [
+    "x",
+    "psi_deg",
+    "e_y_star",
+    "theta_deg"
+  ],
+  "upstream_u_features": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "numeric_context_features": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed"
+  ],
+  "player_constant_features": [
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "x_numeric_zscore_column_order": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde",
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed",
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "forbidden_neural_input_columns": [
+    "vx0",
+    "vy0",
+    "vz0",
+    "ax",
+    "ay",
+    "az"
+  ],
+  "categorical_yaml_key_order": [
+    "batter_name",
+    "pitch_type",
+    "stand",
+    "p_throws"
+  ],
+  "categorical_model_forward_order_alphabetical": [
+    "batter_name",
+    "p_throws",
+    "pitch_type",
+    "stand"
+  ],
+  "categorical_features": {
+    "batter_name": {
+      "embedding_dim": 16,
+      "vocab_size": 10
+    },
+    "pitch_type": {
+      "embedding_dim": 8,
+      "vocab_size": 7
+    },
+    "stand": {
+      "embedding_dim": 4,
+      "vocab_size": 2
+    },
+    "p_throws": {
+      "embedding_dim": 4,
+      "vocab_size": 3
+    }
+  },
+  "weight_column": "combined_training_weight",
+  "standardization_stats_relpath": "manifests/standardization_stats.json",
+  "preprocessing_stats_must_contain_note": "All keys in x_numeric_zscore_column_order plus all target names must exist in standardization_stats.json after build (player constants train-only fill allowed only for p_* if missing, same pattern as stage-u).",
+  "player_constants_must_not_be_in_preprocessing_stats": true,
+  "phi_star_forbidden": true,
+  "release_speed_semantics": "Merged Statcast column release_speed only."
+}

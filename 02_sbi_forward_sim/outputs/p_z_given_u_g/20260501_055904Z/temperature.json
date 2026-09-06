@@ -1,0 +1,7 @@
+{
+  "T_gauss": 1.004640817642212,
+  "T_gauss_x": 1.004640817642212,
+  "T_gauss_y": 1.004640817642212,
+  "T_ang": 0.6730289459228516,
+  "note": "native_trunc_ex_vm: Gaussian block same as circular (\u03a3 via row-scaled Cholesky; T_gauss geom mean of T_x,T_y). \u03ba_cal = \u03ba/T_ang for \u03c8 only. Truncated-normal e_x factor uses learned \u03c3 (not separately temperature-scaled)."
+}

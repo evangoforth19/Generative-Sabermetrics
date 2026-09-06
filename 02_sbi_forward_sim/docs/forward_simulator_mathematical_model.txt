@@ -1,0 +1,464 @@
+% =============================================================================
+% Forward Simulator / Generative Model — Mathematical Specification
+% Package: MCMC 2/sbi_forward_sim (latest as of May 2026)
+% Copy-paste this file into your LaTeX preamble or \input{...}
+% =============================================================================
+
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Mathematical Specification of the SBI Forward Simulator}
+\author{Derived from \texttt{sbi\_forward\_sim/} (latest production stack)}
+\date{May 2026}
+
+\newcommand{\tildeu}{\widetilde{u}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\VM}{\mathrm{VM}}
+\newcommand{\TN}{\mathrm{TN}}
+\newcommand{\softplus}{\operatorname{softplus}}
+\newcommand{\wrap}{\operatorname{wrap}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document gives a mathematical account of the forward (generative) simulator used in the
+\texttt{sbi\_forward\_sim} package. The simulator approximates the conditional law of balls-in-play
+(BIP) outcomes $(\mathrm{EV},\mathrm{LA},\mathrm{SA})$ given pre-contact context $(g,p)$ by chaining
+(i)~a learned density $p_\theta(u\mid g,p)$ over transformed swing kinematics,
+(ii)~a learned density $p_\phi(z\mid u,g,p)$ over reduced collision latents,
+and (iii)~a \emph{deterministic} physics map $\mathcal{D}(u,z,g,p)\mapsto(\mathrm{EV},\mathrm{LA},\mathrm{SA})$
+aligned with production inverse-collision code. Training targets are MCMC posterior draws; each stage
+is fit by weighted maximum-likelihood (density estimation) plus post-hoc temperature scaling on a
+held-out calibration split. The \textbf{latest} stage-$z$ parameterization (May 2026) samples
+tangential restitution $e_x$ and derives launch angle from the decoder; stage-$u$ remains the
+April 2026 shared Gaussian--von Mises mixture checkpoint.
+\end{abstract}
+
+\tableofcontents
+
+% -----------------------------------------------------------------------------
+\section{Generative composition}
+% -----------------------------------------------------------------------------
+
+\subsection{Observed context and notation}
+
+For each BIP event we observe context
+\[
+  g \in \R^{d_g}, \qquad p \in \R^{d_p},
+\]
+where $g$ collects pitch/plate-appearance features available to the neural nets (counts, plate location,
+spin rate and axis, release speed, etc.) and $p$ collects batter exogenous constants (bat length, weight,
+center-of-mass offset, radii of gyration). In shorthand we write $p(u\mid g)$; the implementation is
+\textbf{always} $p(u\mid g,p)$ and $p(z\mid u,g,p)$.
+
+The forward generative approximation is
+\begin{equation}
+\label{eq:full-gen}
+  p(\mathrm{EV},\mathrm{LA},\mathrm{SA}\mid g,p)
+  \;\approx\;
+  \int_{\mathcal{U}} \int_{\mathcal{Z}}
+    \mathbf{1}_{\mathrm{adm}}\!\bigl(\mathcal{D}(u,z,g,p)\bigr)\,
+    p_\phi(z\mid u,g,p)\,
+    p_\theta(u\mid g,p)\,
+    \mathrm{d}z\,\mathrm{d}u,
+\end{equation}
+with ancestral sampling at inference:
+$u \sim p_\theta(\cdot\mid g,p)$, then $z \sim p_\phi(\cdot\mid u,g,p)$, then
+$(\mathrm{EV},\mathrm{LA},\mathrm{SA}) = \mathcal{D}(u,z,g,p)$ if admissible.
+
+\textbf{Key modeling stance:} $p_\theta$ and $p_\phi$ are \emph{not} variational posteriors inside the
+MCMC loop. They are amortized conditional density estimators trained to match empirical distributions
+of \textbf{posterior draws} from production inverse collision MCMC, treated as i.i.d.\ supervised samples
+(within-event dependence handled only via shared labels and importance weights).
+
+% -----------------------------------------------------------------------------
+\section{Latent $u$: transformed swing kinematics}
+% -----------------------------------------------------------------------------
+
+\subsection{Definition of $u$ and empirical construction}
+
+The upstream latent is
+\[
+  u = \bigl(v_{\mathrm{ss}}^{\tilde{}},\, a^{\tilde{}},\, d^{\tilde{}}\bigr) \in \R^3.
+\]
+Each MCMC draw carries a measurement block; from hit coordinates and observed attack/bat-speed fields
+the production pipeline defines (for draw $i$):
+\begin{align}
+  \phi_i^\* &= \mathrm{spray\_angle\_deg}(\mathrm{hc}_x,\mathrm{hc}_y), \\
+  \delta_i^\* &= \mathrm{wrap}_{180^\circ}\!\bigl(\mathrm{attack\_direction\_obs} - \phi_i^\*\bigr), \\
+  d_i^{\tilde{}} &= \phi_i^\*, \\
+  a_i^{\tilde{}} &= \mathrm{attack\_angle\_obs} - \mathrm{aa\_shift}(\phi_i^\*,\delta_i^\*), \\
+  v_{\mathrm{ss},i}^{\tilde{}} &= \mathrm{bat\_speed\_obs} - \mathrm{bs\_shift}(\phi_i^\*,\delta_i^\*).
+\end{align}
+The shifts $(\mathrm{aa\_shift},\mathrm{bs\_shift})$ come from a learned calibration model on
+$(\phi,\delta)$ fit to empirical attack-angle and bat-speed residuals (production
+\texttt{CalibModel}). Thus $d^{\tilde{}}$ is spray direction in degrees; $a^{\tilde{}}$ and
+$v_{\mathrm{ss}}^{\tilde{}}$ are observation-aligned scalars corrected to the spray frame.
+
+\textbf{Assumption (tilde semantics):} MCMC draws provide a proxy for the conditional
+$p(u\mid g,p,\text{outcomes})$ induced by the inverse model; stage-$u$ learns a direct forward
+conditional $p_\theta(u\mid g,p)$ matching that empirical law.
+
+\subsection{Neural context and standardization}
+
+Let $x = \mathrm{concat}(g_{\mathrm{num}}, p)$ denote standardized numeric inputs (train-split
+z-scores from \texttt{standardization\_stats.json}) plus categorical embeddings for
+$\{\texttt{batter\_name},\texttt{pitch\_type},\texttt{stand},\texttt{p\_throws}\}$.
+A two-layer MLP with width $64$ and $\tanh$ activations maps $x$ to mixture parameters:
+\[
+  (\pi_k,\,\mu_k^{\mathrm{va}},\,L_k^{\mathrm{va}},\,\mathrm{loc}_k^{d},\,\kappa_k^{d})_{k=1}^{K}
+  = \mathrm{MLP}_\theta(x), \qquad K = 10.
+\]
+
+For training, $(v_{\mathrm{ss}}^{\tilde{}},a^{\tilde{}})$ are standardized to
+$\tilde{y}_{\mathrm{va}} \in \R^2$; $d^{\tilde{}}$ is kept in \textbf{degrees} on disk but converted
+to radians $\theta_d = \mathrm{rad}(d^{\tilde{}})$ inside the von Mises factor, with wrapping
+$\wrap(\theta) = \mathrm{atan2}(\sin\theta,\cos\theta)$.
+
+\subsection{Distribution: shared mixture Gaussian $\times$ von Mises}
+
+The production head \texttt{SharedMixtureGaussianVonMisesUNet} defines, for each context $x$,
+\begin{equation}
+\label{eq:pu}
+  p_\theta(u\mid g,p)
+  = \sum_{k=1}^{K} \pi_k(x)\,
+    \mathcal{N}\!\Bigl(
+      \begin{pmatrix} \tilde{y}_1 \\ \tilde{y}_2 \end{pmatrix}
+      \,\Big|\,
+      \mu_k^{\mathrm{va}}(x),\;
+      L_k^{\mathrm{va}}(x)\,{L_k^{\mathrm{va}}(x)}^\top
+    \Bigr)
+    \cdot
+    \VM\!\bigl(
+      \wrap(\theta_d) \,\big|\, \mathrm{loc}_k^{d}(x),\, \kappa_k^{d}(x)
+    \bigr),
+\end{equation}
+where $\pi_k = \mathrm{softmax}(\ell_k)$, $L_k^{\mathrm{va}}$ is lower-triangular Cholesky with
+positive diagonal via $\softplus(\cdot)+\varepsilon_{\mathrm{chol}}$, and
+$\mathrm{loc}_k^{d} = \mathrm{atan2}(s_k,c_k)$ from unconstrained sin/cos heads,
+$\kappa_k^{d} = \softplus(\cdot)+\kappa_{\mathrm{floor}}$ capped at $\kappa_{\max}=120$.
+
+\textbf{Within-component coupling:} $(\tilde{y}_1,\tilde{y}_2)$ and $\theta_d$ share the \emph{same}
+discrete index $k$; they are \textbf{not} marginally independent across separate mixture weights.
+
+\textbf{Circular assumption:} $d^{\tilde{}}$ is periodic; a Gaussian on degrees is rejected in favor of
+von Mises on $\wrap(\mathrm{rad}(d^{\tilde{}}))$.
+
+\subsection{Calibration of stage $u$}
+
+\paragraph{Training (MLE).}
+On train-split MCMC draws $\{(u_i,g_i,p_i,w_i)\}$ minimize weighted negative log-likelihood
+\begin{equation}
+  \mathcal{L}_u(\theta)
+  = -\frac{\sum_i w_i \log p_\theta(u_i\mid g_i,p_i)}{\sum_i w_i},
+\end{equation}
+with AdamW ($\mathrm{lr}=10^{-3}$, $\mathrm{wd}=10^{-4}$), event-balanced mini-batches
+($64$ events $\times$ up to $16$ draws/event), early stopping on \textbf{calibration-split}
+weighted NLL. Weights $w_i$ are production \texttt{combined\_training\_weight}.
+
+\paragraph{Post-hoc temperature scaling.}
+On the calibration split, fix $\theta$ and optimize scalars $(T_{\mathrm{va}},T_{\mathrm{ang}})>0$ by
+Adam on $\log T$ to minimize the same weighted NLL under
+\begin{align}
+  L_{k,\mathrm{cal}}^{\mathrm{va}} &= \sqrt{T_{\mathrm{va}}}\, L_k^{\mathrm{va}}, \\
+  \kappa_{k,\mathrm{cal}}^{d} &= \kappa_k^{d} / T_{\mathrm{ang}}.
+\end{align}
+\textbf{Interpretation:} $T_{\mathrm{va}}>1$ inflates Gaussian uncertainty in $(v_{\mathrm{ss}}^{\tilde{}},a^{\tilde{}})$;
+$T_{\mathrm{ang}}>1$ deflates $\kappa$ (wider angular spread for $d^{\tilde{}}$).
+
+\paragraph{Frozen values (canonical checkpoint \texttt{20260407\_193337Z}).}
+\[
+  T_{\mathrm{va}} \approx 1.197, \qquad T_{\mathrm{ang}} \approx 0.825.
+\]
+
+\paragraph{Data calibration upstream of stage $u$.}
+The tilde transforms and $(\mathrm{aa\_shift},\mathrm{bs\_shift})$ are fixed \emph{before} SBI training
+from empirical BIP calibration data (not re-fit during stage-$u$ NLL). Event splits are 70/15/15 at the
+\textbf{event} level (no draw leakage). Player constants $p$ are per-batter medians on the training universe.
+
+% -----------------------------------------------------------------------------
+\section{Latent $z$: reduced collision state}
+% -----------------------------------------------------------------------------
+
+\subsection{Latest parameterization (May 2026): native trunc-$e_x$}
+
+The \textbf{current} stage-$z$ target vector is
+\[
+  z = (x,\,\psi,\,e_y^\*,\,e_x),
+\]
+where $x$ is contact location on the bat (inches), $\psi$ is contact-plane angle (degrees, modeled
+natively in radians), $e_y^\*\in\R$ is normal restitution entering the decoder closure, and
+$e_x\in[0,0.6]$ is tangential restitution sampled by the net (not $\theta_{\mathrm{deg}}$).
+
+\textbf{Assumption:} $\theta_{\mathrm{deg}}$ is \textbf{not} a stage-$z$ latent in this branch; launch
+angle is induced by $\mathcal{D}$ from $(\psi,e_x,u,g,p)$.
+
+\subsection{Neural inputs}
+
+The stage-$z$ context is the concatenation of standardized $(v_{\mathrm{ss}}^{\tilde{}},a^{\tilde{}},d^{\tilde{}})$
+(from sampled or training $u$), the same $g_{\mathrm{num}}$ as stage-$u$, and $p$, plus the same
+categorical embeddings. Pitch kinematics $(v_{x0},v_{y0},v_{z0},a_x,a_y,a_z)$ are \textbf{forbidden}
+in the $z$-network (decoder-only).
+
+\subsection{Distribution: hybrid mixture + conditional truncated normal}
+
+Let $h = \mathrm{MLP}_\phi(\mathrm{concat}(\tilde{u},g,p))$ with $K=5$ components. Write standardized
+Gaussian block $y_g = (\tilde{x},\tilde{e}_y^\*) \in \R^2$ and $\psi_{\mathrm{rad}}=\mathrm{rad}(\psi)$.
+
+\paragraph{Mixture block (shared $\pi_k$).}
+\begin{equation}
+\label{eq:pz-mix}
+  p_\phi^{\mathrm{mix}}(x,e_y^\*,\psi\mid u,g,p)
+  = \sum_{k=1}^{K} \pi_k(h)\,
+    \mathcal{N}\!\bigl(y_g \mid \mu_k^{g}(h),\, L_k^{g}(h){L_k^{g}(h)}^\top\bigr)\,
+    \VM\!\bigl(\psi_{\mathrm{rad}} \mid \mu_{\psi,k}(h),\,\kappa_{\psi,k}(h)\bigr),
+\end{equation}
+with $\mu_{\psi,k}=\mathrm{atan2}(s_{\psi,k},c_{\psi,k})$ and
+$\kappa_{\psi,k}=\softplus(\cdot)+\kappa_{\mathrm{floor}}$.
+
+\paragraph{Conditional $e_x$ head.}
+A secondary MLP $\mathrm{ex\_head}$ takes $(h,\,\tilde{x},\,\tilde{e}_y^\*,\,\sin\psi,\,\cos\psi)$
+with \textbf{detached} $(\tilde{x},\tilde{e}_y^\*,\psi)$ from labels during training and outputs
+$(\mu_{ex},\sigma_{ex})$. Then
+\begin{equation}
+\label{eq:pz-ex}
+  p_\phi(e_x\mid x,e_y^\*,\psi,u,g,p)
+  = \TN_{[0,\,0.6]}\!\bigl(e_x \,\big|\, \mu_{ex}(h,x,e_y^\*,\psi),\,\sigma_{ex}(h,x,e_y^\*,\psi)\bigr),
+\end{equation}
+with log-density
+$\log p_{\TN}(e) = \log\mathcal{N}(e;\mu,\sigma) - \log\bigl[\Phi\!\bigl(\frac{0.6-\mu}{\sigma}\bigr)-\Phi\!\bigl(\frac{-\mu}{\sigma}\bigr)\bigr]$.
+
+\paragraph{Joint stage-$z$ density.}
+\begin{equation}
+\label{eq:pz}
+  p_\phi(z\mid u,g,p)
+  = p_\phi^{\mathrm{mix}}(x,e_y^\*,\psi\mid u,g,p)\;
+    p_\phi(e_x\mid x,e_y^\*,\psi,u,g,p).
+\end{equation}
+
+\textbf{Conditional independence given $h$:} in the mixture block, $\psi$ is von Mises factorized from
+the Gaussian on $(x,e_y^\*)$ \emph{given} $k$; $e_x$ is further conditioned on continuous
+$(x,e_y^\*,\psi)$ through $\mathrm{ex\_head}$.
+
+\subsection{Legacy branch (benchmark): sampled $\theta_{\mathrm{deg}}$}
+
+Checkpoint \texttt{20260407\_221024Z} uses
+$z=(x,\psi,e_y^\*,\theta)$ with
+\begin{equation}
+  p_\phi(z\mid u,g,p)
+  = \sum_{k=1}^{K} \pi_k\,
+    \mathcal{N}(y_g\mid\mu_k^g,L_k^g {L_k^{g}}^\top)\,
+    \VM(\psi\mid\mu_{\psi,k},\kappa_{\psi,k})\,
+    \VM(\theta\mid\mu_{\theta,k},\kappa_{\theta,k}),
+\end{equation}
+with $\theta_{\mathrm{deg}}=\theta_{\mathrm{star}}$ if finite else observed launch angle.
+The decoder branch \texttt{theta\_closure} sets $\mathrm{LA}=\theta_{\mathrm{deg}}$ directly.
+This family is superseded for \textbf{new} training by \eqref{eq:pz} but remains valid for frozen benchmarks.
+
+\subsection{Calibration of stage $z$}
+
+\paragraph{Training (MLE).}
+Minimize weighted NLL of \eqref{eq:pz} on basic-screened MCMC draws (primary training universe):
+\[
+  \mathcal{L}_z(\phi)
+  = -\frac{\sum_i w_i \log p_\phi(z_i\mid u_i,g_i,p_i)}{\sum_i w_i},
+\]
+with the same batching and early-stopping protocol as stage $u$ (config: max 35 epochs, patience 6).
+
+\paragraph{Post-hoc temperature scaling (trunc-$e_x$).}
+On the calibration split, optimize $(T_{\mathrm{gauss}},T_{\mathrm{ang}})$ (isotropic Gaussian inflation
+when \texttt{anisotropic\_gaussian=false}) via
+\begin{align}
+  L_{k,\mathrm{cal}}^{g} &= \sqrt{T_{\mathrm{gauss}}}\, L_k^{g}
+  \quad\text{(isotropic; else row-wise $T_x,T_y$)}, \\
+  \kappa_{\psi,k,\mathrm{cal}} &= \kappa_{\psi,k} / T_{\mathrm{ang}}.
+\end{align}
+The truncated-normal factor \eqref{eq:pz-ex} uses \textbf{learned} $(\mu_{ex},\sigma_{ex})$ unchanged
+(mirrors the $\theta$-family policy of not temperature-scaling extra heads).
+
+\paragraph{Frozen values (latest checkpoint \texttt{20260501\_055549Z}).}
+\[
+  T_{\mathrm{gauss}} \approx 1.005, \qquad T_{\mathrm{ang}} \approx 0.673.
+\]
+
+\paragraph{Target construction.}
+$z$ training rows come from \texttt{posterior\_draws\_long\_basic\_screened.parquet}; $\theta$ is never
+$\phi_{\mathrm{star}}$ in the $z$ slice. Strict-screened tables exist for diagnostics only.
+
+% -----------------------------------------------------------------------------
+\section{Physics decoder $\mathcal{D}(u,z,g,p) = (\mathrm{EV},\mathrm{LA},\mathrm{SA})$}
+% -----------------------------------------------------------------------------
+
+\subsection{Role and inputs}
+
+The map $\mathcal{D}$ is \textbf{deterministic} and \textbf{not} learned. It imports production
+collision geometry from \texttt{run\_mcmc\_posterior\_bank} and \texttt{run\_inverse\_collision\_production}.
+Neural nets use a reduced $g$; the decoder requires a \textbf{superset} of pitch kinematics
+(including $v_{x0},\ldots,a_z$, \texttt{release\_pos\_y}) to build incoming ball velocity and
+$\omega^-$ (pre-contact spin).
+
+From $u$ build transient fields
+\[
+  \phi = d^{\tilde{}},\quad
+  a_{\mathrm{calib}} = a^{\tilde{}},\quad
+  v_{\mathrm{bat}} = v_{\mathrm{ss}}^{\tilde{}},\quad
+  \omega^- = \omega^-(\text{sensor spin}, \phi, t_{\mathrm{contact}}).
+\]
+From $p$ instantiate a rigid-body \texttt{Hitter} (bat length, weight, $x_{\mathrm{cm}}$, $r_g$, $I_z$, etc.).
+
+\subsection{Contact frame and bat kinematics}
+
+Let $(\hat{r},\hat{t})$ be the horizontal spray frame at angle $\phi$.
+Rotate pitch and bat velocities $(v_{Bx},v_{By},v_{Bz})$ and bat vector from contact point $x$ into
+contact normal $\hat{n}(\psi)$ and tangential $\hat{t}(\psi)$ in the $(r,z)$ plane:
+\[
+  v_{B,n} = v_{Br}\cos\psi + v_{Bz}\sin\psi,\quad
+  v_{B,tn} = -v_{Br}\sin\psi + v_{Bz}\cos\psi,
+\]
+and similarly for bat-normal/tangential components and relative velocities
+$\Delta_n = v_{b,n}-v_{B,n}$, $\Delta_t = v_{b,tn}-v_{B,tn}$.
+
+Effective radii $r_y(x)$, $r_x(x)$ depend on $x$ and bat inertia (production formulas).
+
+\subsection{Normal impulse closure (both branches)}
+
+Define the normal Lagrange multiplier (production exact-root convention)
+\begin{equation}
+\label{eq:lambda}
+  \lambda(x,e_y^\*)
+  = \frac{1+e_y^\*}{1+r_y(x)}, \qquad
+  V_{n+} = v_{B,n} + \lambda\,\Delta_n.
+\end{equation}
+This enforces the normal force balance $F_n=0$ at fixed $\psi$ with restitution parameter $e_y^\*$.
+
+% ---
+\subsection{Branch A (latest): analytic $e_x$ --- \texttt{decode\_bip\_analytic\_ex}}
+
+Sampled $e_x \in [0,0.6]$. Tangential outgoing speed is
+\begin{equation}
+\label{eq:Vt-ex}
+  V_{t+}
+  = v_{B,tn}
+  + \frac{(1+e_x)\,\alpha\,\bigl(\Delta_t - r_{\mathrm{ball}}\,\omega^-\bigr)}
+         {(1+r_x(x))(1+\alpha)},
+\end{equation}
+where $\alpha$ is bat--ball friction parameter from production defaults.
+Exit speed (ft/s) and launch angle:
+\begin{equation}
+\label{eq:EV-LA-ex}
+  s = \sqrt{V_{n+}^2 + V_{t+}^2}, \qquad
+  \mathrm{EV} = s \cdot \mathrm{FPS\_TO\_MPH},
+\end{equation}
+\begin{equation}
+\label{eq:LA-ex}
+  \theta = \psi + \mathrm{atan2}(V_{t+},\,V_{n+}), \qquad
+  \mathrm{LA} = \theta \;\text{(degrees)}.
+\end{equation}
+Spray angle is carried from upstream:
+\begin{equation}
+\label{eq:SA}
+  \mathrm{SA} = \phi = d^{\tilde{}}.
+\end{equation}
+
+% ---
+\subsection{Branch B (benchmark): sampled $\theta$ --- \texttt{decode\_bip\_from\_sample}}
+
+Given $\theta_{\mathrm{deg}}$ from $z$, set $\delta = \theta-\psi$ and
+\begin{equation}
+\label{eq:theta-closure}
+  s = \frac{V_{n+}}{\cos\delta}, \qquad
+  V_{t+} = s\sin\delta, \qquad
+  \mathrm{EV} = s\cdot \mathrm{FPS\_TO\_MPH}, \quad
+  \mathrm{LA} = \theta_{\mathrm{deg}}, \quad
+  \mathrm{SA} = \phi.
+\end{equation}
+Post hoc, $e_x$ may be \emph{inferred} from \eqref{eq:Vt-ex} for diagnostics but is not sampled in $z$.
+
+\subsection{Admissibility}
+
+Let $\mathcal{A}$ denote production inverse-style constraints (strict mode): e.g.\
+$V_{n+}>0$, $|V_t/V_n|<1$, $\Delta_n>0$, geometry bound on $D(\psi_{\mathrm{rel}})$,
+no gross-slip regime, $e_x\in[0,0.6]$ with finite log-prior, $\psi$ in support, positive $s$, etc.
+The indicator $\mathbf{1}_{\mathrm{adm}}$ in \eqref{eq:full-gen} is $\mathbf{1}\{z\in\mathcal{A}\}$.
+
+\textbf{Assumption:} forward sampling uses the same hard gates as production MCMC for strict benchmarks;
+lenient mode computes $(\mathrm{EV},\mathrm{LA},\mathrm{SA})$ whenever $s>0$ and records violations as flags.
+
+\subsection{Calibration of the physics decoder}
+
+The decoder is \textbf{not} fit by MLE on $(\mathrm{EV},\mathrm{LA},\mathrm{SA})$. Parameters
+$(\alpha,\mu,g_2,\ldots)$, geometry functions $R(x)$, $r_y(x)$, $r_x(x)$, and regime priors on $e_x$
+are fixed from production physics.
+
+\paragraph{Optional post-hoc EV calibration (separate module).}
+An optional \texttt{EVPhysicsCalibrator} fits a supervised residual on \textbf{event-level} means:
+\[
+  r_e = \mathrm{EV}_{\mathrm{obs}} - \overline{\mathrm{EV}}_{\mathrm{dec}},
+  \qquad
+  \hat{r}_e = f_{\mathrm{HGBR}}(\text{context}),
+\]
+then per-draw
+\[
+  \mathrm{EV}_{\mathrm{cal}}
+  = \mathrm{soft\_cap}\!\Bigl(
+      \overline{\mathrm{EV}}_{\mathrm{cal}} + \rho\,(\mathrm{EV}_{\mathrm{dec}}-\overline{\mathrm{EV}}_{\mathrm{dec}})
+    \Bigr),
+  \quad \rho \approx 0.85.
+\]
+This does \textbf{not} alter $p_\theta$ or $p_\phi$; it is an empirical link from simulated to observed EV.
+
+% -----------------------------------------------------------------------------
+\section{End-to-end calibration summary}
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{tabular}{llll}
+\hline
+\textbf{Stage} & \textbf{Object calibrated} & \textbf{Method} & \textbf{Empirical data} \\
+\hline
+MCMC targets & $(u,z)$ posteriors & Bayesian MCMC (production) & BIP events, exact-root model \\
+Tilde transforms & $(a^{\tilde{}},v_{\mathrm{ss}}^{\tilde{}})$ shifts & Learned $\mathrm{aa\_shift},\mathrm{bs\_shift}$ & Calibration model on $(\phi,\delta)$ \\
+Dataset & Splits, z-scores & Train-only stats & 70/15/15 event split \\
+Stage $u$ & $\theta$ in $p_\theta(u\mid g,p)$ & Weighted MLE (NLL) & MCMC draws, train split \\
+Stage $u$ post-hoc & $T_{\mathrm{va}},T_{\mathrm{ang}}$ & NLL minimization on cal split & Same draws, cal split \\
+Stage $z$ & $\phi$ in $p_\phi(z\mid u,g,p)$ & Weighted MLE (NLL) & MCMC draws, train split \\
+Stage $z$ post-hoc & $T_{\mathrm{gauss}},T_{\mathrm{ang}}$ & NLL minimization on cal split & Cal split (trunc-$e_x$: $\psi$ block only) \\
+Decoder $\mathcal{D}$ & --- & Fixed analytic physics & Production code \\
+EV residual (opt.) & $\hat{r}_e$ & HGBR + soft cap & Held-out / train events \\
+\hline
+\end{tabular}
+\end{center}
+
+% -----------------------------------------------------------------------------
+\section{Latest frozen checkpoints (reference)}
+% -----------------------------------------------------------------------------
+
+\begin{itemize}
+  \item Stage $u$: \texttt{outputs/p\_u\_given\_g/20260407\_193337Z/} \\
+        head: \texttt{shared\_gaussian\_vm\_d}, $K=10$; temperatures in \texttt{temperature.json}.
+  \item Stage $z$ (latest): \texttt{outputs/p\_z\_given\_u\_g/20260501\_055549Z/} \\
+        family: \texttt{hybrid\_gauss\_vonmises\_trunc\_ex}, $K=5$; config
+        \texttt{p\_z\_given\_u\_g\_native\_trunc\_ex.yaml}.
+  \item Held-out forward test with trunc-$e_x$: \texttt{outputs/heldout\_pipeline\_test/20260501\_060227Z/}.
+  \item Benchmark (sampled $\theta$ in $z$): $z$ checkpoint \texttt{20260407\_221024Z} paired with same $u$.
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+\section{Assumptions checklist}
+% -----------------------------------------------------------------------------
+
+\begin{enumerate}
+  \item \textbf{Factorization:} $p(u,z\mid g,p) \approx p_\phi(z\mid u,g,p)\,p_\theta(u\mid g,p)$ (no learned coupling beyond conditioning on $u$ in stage $z$).
+  \item \textbf{Draw supervision:} MCMC posterior draws are treated as exact samples for density learning; no explicit model of MCMC noise.
+  \item \textbf{Event independence:} training assumes draws from different events are independent; weights re-balance events.
+  \item \textbf{Circularity:} $d^{\tilde{}}$ and $\psi,\theta$ (when present) use von Mises, not Euclidean Gaussians on degrees.
+  \item \textbf{Decoder consistency:} $\mathcal{D}$ matches production inverse collision closure; learned stages do not back-propagate through $\mathcal{D}$.
+  \item \textbf{Parameterization choice:} latest $z$ samples $e_x$ and computes $\mathrm{LA}$ from \eqref{eq:LA-ex}; legacy samples $\theta$ and uses \eqref{eq:theta-closure}.
+\end{enumerate}
+
+\end{document}

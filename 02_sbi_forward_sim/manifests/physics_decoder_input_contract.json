@@ -1,0 +1,94 @@
+{
+  "description": "Minimal public inputs for sbi_forward_sim physics decoder (stricter than neural-only schema.G_COLUMNS).",
+  "g": {
+    "neural_g_columns_note": "schema.G_COLUMNS is the frozen neural feature list and does NOT include release_pos_y; joins for full forward simulation must supply decoder extras.",
+    "notes": {
+      "release_pos_y": "feet; Statcast release extension along y \u2014 REQUIRED for decoder parity with run_mcmc_posterior_bank.build_incoming_pitch_from_sensor (contact time).",
+      "release_spin_rate": "rpm (feeds relevant_omega_minus_from_sensor).",
+      "vx0_vy0_vz0_ax_ay_az": "Statcast pitch kinematics at pitch release (ft/s and ft/s^2 convention per bank)."
+    },
+    "optional_keys": [
+      "active_spin_ratio"
+    ],
+    "required_keys_always": [
+      "ax",
+      "ay",
+      "az",
+      "release_pos_y",
+      "release_spin_rate",
+      "vx0",
+      "vy0",
+      "vz0"
+    ],
+    "source": "event_context",
+    "spin_axis": "Provide finite `spin_axis_deg` OR both finite `spin_axis_sin` and `spin_axis_cos` (2D proxy consistent with processed SBI tables and bank omega_minus)."
+  },
+  "identifiers": {
+    "batter_name": {
+      "note": "Player id for p/hitter join.",
+      "required": true,
+      "type": "str"
+    },
+    "event_id": {
+      "note": "Book-keeping / batch joins.",
+      "required": true,
+      "type": "int"
+    }
+  },
+  "manifest_version": 1,
+  "p": {
+    "required_keys_decoder_physics": [
+      "Iz_oz_in2",
+      "bat_length_in",
+      "bat_weight_oz",
+      "r_g_fixed_in",
+      "x_cm_fixed_in"
+    ],
+    "schema_p_columns_note": "schema.P_COLUMNS also lists I0_oz_in2 for training row consistency; decoder physics does not read it (Hitter derives I0 from weight and r_g).",
+    "source": "player_constants",
+    "units": {
+      "Iz_oz_in2": "oz*in^2",
+      "bat_length_in": "in",
+      "bat_weight_oz": "oz",
+      "r_g_fixed_in": "in",
+      "x_cm_fixed_in": "in"
+    }
+  },
+  "u": {
+    "required_keys": [
+      "a_tilde",
+      "d_tilde",
+      "v_ss_tilde"
+    ],
+    "source": "stage_u_outputs",
+    "units": {
+      "a_tilde": "deg (attack angle, calib-to-spray lineage)",
+      "d_tilde": "deg (spray direction phi, calib lineage)",
+      "v_ss_tilde": "mph (calibrated sweet-spot bat speed lineage)"
+    }
+  },
+  "z": {
+    "branch_rule": "decoder_z_branch(z): ex_analytic if finite e_x and no finite theta_deg; else legacy.",
+    "ex_analytic_required_keys": [
+      "e_x",
+      "e_y_star",
+      "psi_deg",
+      "x"
+    ],
+    "legacy_required_keys": [
+      "e_y_star",
+      "psi_deg",
+      "theta_deg",
+      "x"
+    ],
+    "required_keys_note": "DECODER_Z_REQUIRED in code is the legacy set for backward-compat imports only.",
+    "source": "stage_z_outputs",
+    "units": {
+      "e_x": "unitless [0, 0.6] (ex_analytic only: tangential restitution latent)",
+      "e_y_star": "unitless (normal-direction restitution latent e_y*)",
+      "psi_deg": "deg (contact normal tilt in {r_hat(phi), e_z} plane)",
+      "theta_deg": "deg (legacy only: outgoing polar angle in that plane)",
+      "x": "in (contact distance from knob along bat)"
+    }
+  }
+}

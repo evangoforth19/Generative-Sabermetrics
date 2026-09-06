@@ -1,0 +1,88 @@
+{
+  "contract_id": "p_u_given_g_stage_u_v1",
+  "description": "Frozen stage-u feature contract for p(u|g,p). Authoritative copy derived from outputs/p_u_given_g/20260407_170748Z/feature_manifest.json.",
+  "targets": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "numeric_features": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed"
+  ],
+  "player_constant_features": [
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "x_numeric_zscore_column_order": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed",
+    "bat_length_in",
+    "bat_weight_oz",
+    "x_cm_fixed_in",
+    "r_g_fixed_in",
+    "I0_oz_in2",
+    "Iz_oz_in2"
+  ],
+  "categorical_yaml_key_order": [
+    "batter_name",
+    "pitch_type",
+    "stand",
+    "p_throws"
+  ],
+  "categorical_model_forward_order_alphabetical": [
+    "batter_name",
+    "p_throws",
+    "pitch_type",
+    "stand"
+  ],
+  "categorical_features": {
+    "batter_name": {
+      "embedding_dim": 16,
+      "vocab_size": 13
+    },
+    "pitch_type": {
+      "embedding_dim": 8,
+      "vocab_size": 17
+    },
+    "stand": {
+      "embedding_dim": 4,
+      "vocab_size": 2
+    },
+    "p_throws": {
+      "embedding_dim": 4,
+      "vocab_size": 3
+    }
+  },
+  "weight_column": "combined_training_weight",
+  "standardization_stats_relpath": "manifests/standardization_stats.json",
+  "preprocessing_stats_must_contain": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed",
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "player_constants_must_not_be_in_preprocessing_stats": true,
+  "player_constant_standardization_note": "Train-split-only mean/std computed at load time (not read from preprocessing JSON).",
+  "release_speed_semantics": "Merged Statcast column release_speed only; do not substitute velocity norms or vx0/vy0/vz0 blocks."
+}

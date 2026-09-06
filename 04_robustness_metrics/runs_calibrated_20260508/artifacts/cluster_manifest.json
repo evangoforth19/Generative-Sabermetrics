@@ -1,0 +1,347 @@
+{
+  "clusters": [
+    {
+      "cluster_global_id": 0,
+      "pitch_group": "4F",
+      "component": 0,
+      "n_master_rows_assign": 321
+    },
+    {
+      "cluster_global_id": 1,
+      "pitch_group": "4F",
+      "component": 1,
+      "n_master_rows_assign": 288
+    },
+    {
+      "cluster_global_id": 2,
+      "pitch_group": "4F",
+      "component": 2,
+      "n_master_rows_assign": 237
+    },
+    {
+      "cluster_global_id": 3,
+      "pitch_group": "4F",
+      "component": 3,
+      "n_master_rows_assign": 207
+    },
+    {
+      "cluster_global_id": 4,
+      "pitch_group": "4F",
+      "component": 4,
+      "n_master_rows_assign": 229
+    },
+    {
+      "cluster_global_id": 5,
+      "pitch_group": "4F",
+      "component": 5,
+      "n_master_rows_assign": 160
+    },
+    {
+      "cluster_global_id": 6,
+      "pitch_group": "4F",
+      "component": 6,
+      "n_master_rows_assign": 55
+    },
+    {
+      "cluster_global_id": 7,
+      "pitch_group": "4F",
+      "component": 7,
+      "n_master_rows_assign": 264
+    },
+    {
+      "cluster_global_id": 8,
+      "pitch_group": "4F",
+      "component": 8,
+      "n_master_rows_assign": 176
+    },
+    {
+      "cluster_global_id": 9,
+      "pitch_group": "4F",
+      "component": 9,
+      "n_master_rows_assign": 20
+    },
+    {
+      "cluster_global_id": 10,
+      "pitch_group": "2F",
+      "component": 0,
+      "n_master_rows_assign": 123
+    },
+    {
+      "cluster_global_id": 11,
+      "pitch_group": "2F",
+      "component": 1,
+      "n_master_rows_assign": 252
+    },
+    {
+      "cluster_global_id": 12,
+      "pitch_group": "2F",
+      "component": 2,
+      "n_master_rows_assign": 123
+    },
+    {
+      "cluster_global_id": 13,
+      "pitch_group": "2F",
+      "component": 3,
+      "n_master_rows_assign": 58
+    },
+    {
+      "cluster_global_id": 14,
+      "pitch_group": "2F",
+      "component": 4,
+      "n_master_rows_assign": 115
+    },
+    {
+      "cluster_global_id": 15,
+      "pitch_group": "2F",
+      "component": 5,
+      "n_master_rows_assign": 207
+    },
+    {
+      "cluster_global_id": 16,
+      "pitch_group": "2F",
+      "component": 6,
+      "n_master_rows_assign": 264
+    },
+    {
+      "cluster_global_id": 17,
+      "pitch_group": "2F",
+      "component": 7,
+      "n_master_rows_assign": 9
+    },
+    {
+      "cluster_global_id": 18,
+      "pitch_group": "2F",
+      "component": 8,
+      "n_master_rows_assign": 336
+    },
+    {
+      "cluster_global_id": 19,
+      "pitch_group": "CF",
+      "component": 0,
+      "n_master_rows_assign": 58
+    },
+    {
+      "cluster_global_id": 20,
+      "pitch_group": "CF",
+      "component": 1,
+      "n_master_rows_assign": 81
+    },
+    {
+      "cluster_global_id": 21,
+      "pitch_group": "CF",
+      "component": 2,
+      "n_master_rows_assign": 7
+    },
+    {
+      "cluster_global_id": 22,
+      "pitch_group": "CF",
+      "component": 3,
+      "n_master_rows_assign": 36
+    },
+    {
+      "cluster_global_id": 23,
+      "pitch_group": "CF",
+      "component": 4,
+      "n_master_rows_assign": 39
+    },
+    {
+      "cluster_global_id": 24,
+      "pitch_group": "CF",
+      "component": 5,
+      "n_master_rows_assign": 173
+    },
+    {
+      "cluster_global_id": 25,
+      "pitch_group": "CF",
+      "component": 6,
+      "n_master_rows_assign": 69
+    },
+    {
+      "cluster_global_id": 26,
+      "pitch_group": "CF",
+      "component": 7,
+      "n_master_rows_assign": 64
+    },
+    {
+      "cluster_global_id": 27,
+      "pitch_group": "S",
+      "component": 0,
+      "n_master_rows_assign": 164
+    },
+    {
+      "cluster_global_id": 28,
+      "pitch_group": "S",
+      "component": 1,
+      "n_master_rows_assign": 364
+    },
+    {
+      "cluster_global_id": 29,
+      "pitch_group": "S",
+      "component": 2,
+      "n_master_rows_assign": 206
+    },
+    {
+      "cluster_global_id": 30,
+      "pitch_group": "S",
+      "component": 3,
+      "n_master_rows_assign": 301
+    },
+    {
+      "cluster_global_id": 31,
+      "pitch_group": "S",
+      "component": 4,
+      "n_master_rows_assign": 2
+    },
+    {
+      "cluster_global_id": 32,
+      "pitch_group": "S",
+      "component": 5,
+      "n_master_rows_assign": 118
+    },
+    {
+      "cluster_global_id": 33,
+      "pitch_group": "S",
+      "component": 6,
+      "n_master_rows_assign": 76
+    },
+    {
+      "cluster_global_id": 34,
+      "pitch_group": "S",
+      "component": 7,
+      "n_master_rows_assign": 183
+    },
+    {
+      "cluster_global_id": 35,
+      "pitch_group": "S",
+      "component": 8,
+      "n_master_rows_assign": 147
+    },
+    {
+      "cluster_global_id": 36,
+      "pitch_group": "C",
+      "component": 0,
+      "n_master_rows_assign": 57
+    },
+    {
+      "cluster_global_id": 37,
+      "pitch_group": "C",
+      "component": 1,
+      "n_master_rows_assign": 21
+    },
+    {
+      "cluster_global_id": 38,
+      "pitch_group": "C",
+      "component": 2,
+      "n_master_rows_assign": 34
+    },
+    {
+      "cluster_global_id": 39,
+      "pitch_group": "C",
+      "component": 3,
+      "n_master_rows_assign": 38
+    },
+    {
+      "cluster_global_id": 40,
+      "pitch_group": "C",
+      "component": 4,
+      "n_master_rows_assign": 46
+    },
+    {
+      "cluster_global_id": 41,
+      "pitch_group": "C",
+      "component": 5,
+      "n_master_rows_assign": 44
+    },
+    {
+      "cluster_global_id": 42,
+      "pitch_group": "C",
+      "component": 6,
+      "n_master_rows_assign": 8
+    },
+    {
+      "cluster_global_id": 43,
+      "pitch_group": "C",
+      "component": 7,
+      "n_master_rows_assign": 61
+    },
+    {
+      "cluster_global_id": 44,
+      "pitch_group": "C",
+      "component": 8,
+      "n_master_rows_assign": 57
+    },
+    {
+      "cluster_global_id": 45,
+      "pitch_group": "CH",
+      "component": 0,
+      "n_master_rows_assign": 11
+    },
+    {
+      "cluster_global_id": 46,
+      "pitch_group": "CH",
+      "component": 1,
+      "n_master_rows_assign": 55
+    },
+    {
+      "cluster_global_id": 47,
+      "pitch_group": "CH",
+      "component": 2,
+      "n_master_rows_assign": 55
+    },
+    {
+      "cluster_global_id": 48,
+      "pitch_group": "CH",
+      "component": 3,
+      "n_master_rows_assign": 42
+    },
+    {
+      "cluster_global_id": 49,
+      "pitch_group": "CH",
+      "component": 4,
+      "n_master_rows_assign": 13
+    },
+    {
+      "cluster_global_id": 50,
+      "pitch_group": "CH",
+      "component": 5,
+      "n_master_rows_assign": 125
+    },
+    {
+      "cluster_global_id": 51,
+      "pitch_group": "CH",
+      "component": 6,
+      "n_master_rows_assign": 156
+    },
+    {
+      "cluster_global_id": 52,
+      "pitch_group": "CH",
+      "component": 7,
+      "n_master_rows_assign": 43
+    },
+    {
+      "cluster_global_id": 53,
+      "pitch_group": "CH",
+      "component": 8,
+      "n_master_rows_assign": 31
+    },
+    {
+      "cluster_global_id": 54,
+      "pitch_group": "CH",
+      "component": 9,
+      "n_master_rows_assign": 24
+    },
+    {
+      "cluster_global_id": 55,
+      "pitch_group": "CH",
+      "component": 10,
+      "n_master_rows_assign": 66
+    },
+    {
+      "cluster_global_id": 56,
+      "pitch_group": "CH",
+      "component": 11,
+      "n_master_rows_assign": 96
+    }
+  ],
+  "total_clusters": 57
+}

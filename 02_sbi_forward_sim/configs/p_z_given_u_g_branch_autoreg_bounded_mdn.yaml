@@ -1,0 +1,148 @@
+# Stage-z: branch-autoregressive bounded hybrid MDN (additive family; does not replace trunc-ex).
+
+paths:
+  z_train: "data_processed/z_train.parquet"
+  z_calibration: "data_processed/z_calibration.parquet"
+  z_test: "data_processed/z_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_z_given_u_g_feature_contract_v3.json"
+  joint_train: "data_processed/joint_train.parquet"
+
+targets:
+  - x
+  - psi_deg
+  - e_y_star
+  - e_x
+
+upstream_u_features:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_context_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_spin_rate
+  - spin_axis_sin
+  - spin_axis_cos
+  - release_speed
+
+player_constant_features:
+  - bat_length_in
+  - bat_weight_oz
+  - x_cm_fixed_in
+  - r_g_fixed_in
+  - I0_oz_in2
+  - Iz_oz_in2
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+  stand: { embedding_dim: 4 }
+  p_throws: { embedding_dim: 4 }
+
+weight_column: "combined_training_weight"
+
+target_parameterization: "branch_autoreg_bounded_hybrid_mdn_z"
+
+target_transform:
+  x:
+    transform: bounded_logit_zscore
+    support_mode: physics_from_player_constants
+    lower_formula: "bat_length_in - 11.0"
+    upper_formula: "bat_length_in"
+    fallback_mode: train_empirical_with_padding
+    fallback_padding_abs: 0.25
+    eps: 1.0e-5
+  e_y_star:
+    transform: bounded_logit_zscore
+    lower: 0.0
+    upper: 1.0
+    eps: 1.0e-5
+  e_x:
+    transform: bounded_logit_zscore
+    lower: 0.0
+    upper: 0.6
+    eps: 1.0e-5
+  zscore_scope: global_train_after_logit
+  raw_space_nll_with_jacobian: true
+
+validation:
+  split_calibration_for_model_selection: true
+  val_select_fraction: 0.5
+  split_seed: 20260502
+  use_event_level_split: true
+  selection_metric: weighted_joint_nll_pre_temperature
+  final_test_selected_only: true
+
+model:
+  family: branch_autoreg_bounded_hybrid_mdn_z
+  K: 5
+  hidden_dim: 64
+  depth: 2
+  activation: tanh
+  dropout: 0.0
+  branch_embedding_dim: 8
+  kappa_floor: 1.0e-3
+  kappa_max: 120.0
+
+covariance:
+  chol_eps: 1.0e-4
+  diag_floor: 0.05
+  diag_ceiling: 5.0
+  use_diag_ceiling: true
+  offdiag_tanh_scale: 2.0
+
+ex:
+  sigma_floor: 0.05
+  sigma_ceiling: 5.0
+  use_sigma_ceiling: true
+
+regularization:
+  optimizer_weight_decay: 3.0e-4
+  lambda_branch_embedding_l2: 1.0e-4
+  lambda_cholesky_offdiag_l2: 1.0e-4
+  lambda_log_scale_l2: 1.0e-5
+  lambda_ex_log_scale_l2: 1.0e-5
+  lambda_mixture_entropy: 0.0
+  report_effective_components: true
+
+training:
+  seed: 45
+  max_epochs: 80
+  patience: 10
+  lr: 8.0e-4
+  optimizer: AdamW
+  batch_events: 64
+  draws_per_event: 16
+  grad_clip_norm: 5.0
+  debug_one_epoch: false
+
+calibration:
+  fit_temperatures: true
+  split: z_temp_cal
+  steps: 600
+  lr: 0.05
+  anisotropic_xy: true
+  calibrate_ex: true
+
+evaluation:
+  rich_eval: true
+  report_model_space_nll: true
+  report_raw_space_nll_with_jacobian: true
+  report_factor_nlls: true
+  report_pit: true
+  report_coverage_levels: [0.5, 0.8, 0.9]
+  report_energy_score: false
+  report_mixture_diagnostics: true
+  report_covariance_diagnostics: true
+  report_support_diagnostics: true
+  n_predictive_samples: 256
+  eval_batch_size: 512
+  run_decoder_level_eval_for_final_selected: false
+
+outputs:
+  run_dir: "outputs/p_z_given_u_g"

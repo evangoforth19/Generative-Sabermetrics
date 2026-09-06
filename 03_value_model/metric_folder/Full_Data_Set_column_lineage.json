@@ -1,0 +1,44 @@
+{
+  "source": "statcast_pybaseball_shards",
+  "bip_filter": "launch_speed >= 40.0 (Statcast mph)",
+  "g_columns_order": [
+    "z_count",
+    "release_speed",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "plate_x",
+    "plate_z",
+    "pitch_type",
+    "stand",
+    "p_throws",
+    "vx0",
+    "vy0",
+    "vz0",
+    "ax",
+    "ay",
+    "az"
+  ],
+  "source_columns_appended": {
+    "spin_axis": "Statcast spin axis in degrees; source for spin_axis_sin = sin(rad), spin_axis_cos = cos(rad) with rad = deg2rad(spin_axis).",
+    "balls": "Statcast balls; used with strikes to map z_count via feature_engineering.z_count_from_balls_strikes.",
+    "strikes": "Statcast strikes; used with balls to map z_count."
+  },
+  "direct_from_statcast_no_transform": [
+    "release_speed",
+    "release_spin_rate",
+    "plate_x",
+    "plate_z",
+    "pitch_type",
+    "stand",
+    "p_throws",
+    "vx0",
+    "vy0",
+    "vz0",
+    "ax",
+    "ay",
+    "az"
+  ],
+  "statcast_chunks_dir": "/home/evangoforth03/Bayesian Research/data/statcast_pybaseball/chunks",
+  "rhb_only": false
+}

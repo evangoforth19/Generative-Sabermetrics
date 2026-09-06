@@ -1,0 +1,68 @@
+# Stage-u model p(u | g, p) — defaults (paths relative to sbi_forward_sim/)
+
+paths:
+  u_train: "data_processed/u_train.parquet"
+  u_calibration: "data_processed/u_calibration.parquet"
+  u_test: "data_processed/u_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_u_given_g_feature_contract.json"
+
+targets:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_spin_rate
+  - spin_axis_sin
+  - spin_axis_cos
+  - release_speed
+
+player_constant_features:
+  - bat_length_in
+  - bat_weight_oz
+  - x_cm_fixed_in
+  - r_g_fixed_in
+  - I0_oz_in2
+  - Iz_oz_in2
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+  stand: { embedding_dim: 4 }
+  p_throws: { embedding_dim: 4 }
+
+weight_column: "combined_training_weight"
+
+training:
+  seed: 42
+  # Increase max_epochs for production quality (full CPU runs are slow).
+  # Raise max_epochs (e.g. 40+) for production; defaults favor a complete pipeline smoke on CPU.
+  max_epochs: 5
+  early_stopping_patience: 2
+  early_stopping_metric: "calibration_weighted_nll"
+  lr: 0.001
+  weight_decay: 0.0001
+  dropout: 0.0
+  batch_events: 64
+  max_draws_per_event: 16
+  grad_clip: 5.0
+  eval_calibration_every: 1
+
+model:
+  hidden_width: 64
+  hidden_layers: 2
+  activation: "tanh"
+  chol_eps: 1.0e-5
+
+calibration:
+  max_iter: 400
+  lr: 0.05
+
+outputs:
+  run_dir: "outputs/p_u_given_g"

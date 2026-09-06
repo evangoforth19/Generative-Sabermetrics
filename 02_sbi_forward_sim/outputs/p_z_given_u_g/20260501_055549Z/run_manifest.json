@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "20260501_055549Z",
+  "config_path": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_z_given_u_g/20260501_042344Z/config_resolved.yaml",
+  "target_parameterization": "native_trunc_ex_vm",
+  "model_family": "hybrid_gauss_vonmises_trunc_ex",
+  "temperature_T_gauss": 1.004640817642212,
+  "temperature_T_gauss_x": 1.004640817642212,
+  "temperature_T_gauss_y": 1.004640817642212,
+  "temperature_T_ang": 0.6730289459228516,
+  "recalibrated_from_checkpoint": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_z_given_u_g/20260501_042344Z/checkpoint.pt",
+  "weighted_nll_joint_test_post_temp": -34.30487158242978
+}

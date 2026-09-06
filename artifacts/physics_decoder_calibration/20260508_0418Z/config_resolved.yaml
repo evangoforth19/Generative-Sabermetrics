@@ -1,0 +1,16 @@
+split_mode: baseline
+baseline_splits_dir: /home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/data_processed
+fit_heldout_dir: /home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/heldout_pipeline_test/20260508_030231Z
+eval_heldout_dir: /home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/heldout_pipeline_test/20260501_060227Z
+single_heldout_dir: null
+draws_file_fit: /home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/heldout_pipeline_test/20260508_030231Z/predictive_draws_admissible.parquet
+draws_file_eval: /home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/heldout_pipeline_test/20260501_060227Z/predictive_draws_admissible.parquet
+n_fit_events_summary: 5644
+n_test_events_summary: 1010
+n_baseline_train_cal: 5644
+n_baseline_test: 1010
+rho: 0.85
+cap: 121.0
+tau: 2.0
+seed: 42
+ev_col_resolved: EV

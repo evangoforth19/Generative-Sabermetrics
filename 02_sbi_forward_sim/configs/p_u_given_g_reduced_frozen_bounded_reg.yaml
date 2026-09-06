@@ -1,0 +1,126 @@
+# Stage-u: reduced-input frozen shared Gaussian x von Mises MDN.
+# Inputs are intentionally limited to count/location/release speed plus pitch and batter identity.
+
+paths:
+  u_train: "data_processed/u_train.parquet"
+  u_calibration: "data_processed/u_calibration.parquet"
+  u_test: "data_processed/u_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_u_given_g_reduced_feature_contract.json"
+
+targets:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_speed
+
+player_constant_features: []
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+
+weight_column: "combined_training_weight"
+
+target_transform:
+  va_transform: player_specific_bounded_logit_zscore
+  eps: 1.0e-5
+  zscore_scope: global_train_after_logit
+  raw_space_nll_with_jacobian: true
+
+bounds:
+  player_specific:
+    enabled: true
+    fit_split: train
+    player_col: batter_name
+    min_events_for_player_bounds: 20
+    min_rows_for_player_bounds: 100
+    fallback: global_train_bounds
+    quantile_bounds:
+      enabled: true
+      lower: 0.01
+      upper: 0.99
+    padding:
+      v_ss_tilde_abs: 0.0
+      a_tilde_abs: 0.0
+      d_tilde_deg: 0.0
+    use_global_d_tilde_cap: true
+    clip_d_tilde_to_global_cap: true
+    d_tilde_global_cap: [-45.0, 45.0]
+  global_sanity_caps:
+    v_ss_tilde: [20.0, 110.0]
+  d_tilde_support:
+    mode: global_interval
+    interval_deg: [-45.0, 45.0]
+    sampling_policy: rejection_with_resample_cap
+    rejection_resample_cap: 500
+  allow_train_clipping_above_threshold: true
+  train_clipping_warning_threshold: 0.01
+
+validation:
+  split_calibration_for_model_selection: true
+  val_select_fraction: 0.5
+  split_seed: 20260408
+  selection_metric: weighted_nll_pre_temperature
+  use_event_level_split: true
+  final_test_selected_only: true
+
+model:
+  head_family: shared_gaussian_vm_d_bounded_support
+  n_mixture_components: 10
+  hidden_width: 64
+  hidden_layers: 2
+  activation: tanh
+  dropout: 0.0
+  chol_eps: 1.0e-5
+  kappa_floor: 1.0e-3
+  kappa_max: 120.0
+
+regularization:
+  lambda_l1: 0.0
+  lambda_l2: 0.0
+  include_bias: false
+  include_embeddings: true
+
+training:
+  seed: 42
+  max_epochs: 90
+  early_stopping_patience: 12
+  early_stopping_metric: val_select_weighted_nll
+  lr: 0.001
+  weight_decay: 0.0
+  batch_events: 64
+  max_draws_per_event: 16
+  grad_clip: 5.0
+  eval_calibration_every: 1
+
+calibration:
+  fit_temperatures: true
+  split: u_temp_cal
+  max_iter: 400
+  lr: 0.05
+
+evaluation:
+  report_raw_space_nll_with_jacobian: true
+  report_model_space_nll: true
+  report_bounds_diagnostics: true
+  report_circular_support_diagnostics: true
+  n_mc_coverage_draws_d: 256
+
+sweep:
+  enabled: false
+  fit_temperature_for_candidates: true
+  final_test_selected_only: true
+  grid:
+    regularization.lambda_l1: [0.0, 1.0e-7, 1.0e-6, 1.0e-5]
+    regularization.lambda_l2: [0.0, 1.0e-6, 1.0e-5, 1.0e-4]
+
+outputs:
+  run_dir: "outputs/p_u_given_g"

@@ -1,0 +1,112 @@
+{
+  "parquet_paths": [
+    "/home/evangoforth03/Bayesian Research/data/statcast_pybaseball/statcast_all.parquet"
+  ],
+  "date_start": "2020-01-01",
+  "date_end": "2099-12-31",
+  "game_date_min_observed": "2020-07-23 00:00:00",
+  "game_date_max_observed": "2020-10-27 00:00:00",
+  "n_rows_mapped_to_pitch_groups": 277344,
+  "rows_dropped_missing_features_after_group_map": 1324,
+  "group_map": {
+    "4F": [
+      "FF",
+      "FA"
+    ],
+    "2F": [
+      "SI",
+      "FT"
+    ],
+    "CF": [
+      "FC"
+    ],
+    "S": [
+      "SL",
+      "ST"
+    ],
+    "C": [
+      "CU",
+      "KC",
+      "CS"
+    ],
+    "CH": [
+      "CH",
+      "FS"
+    ]
+  },
+  "pitch_type_counts_in_clean_sample": {
+    "FF": 97135,
+    "SL": 46080,
+    "SI": 43211,
+    "CH": 31784,
+    "CU": 22592,
+    "FC": 19841,
+    "KC": 7446,
+    "FS": 5118,
+    "ST": 3783,
+    "FA": 289,
+    "CS": 65
+  },
+  "features": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed"
+  ],
+  "covariance_type": "diag",
+  "groups": {
+    "4F": {
+      "n_rows": 97424
+    },
+    "2F": {
+      "n_rows": 43211
+    },
+    "CF": {
+      "n_rows": 19841
+    },
+    "S": {
+      "n_rows": 49863
+    },
+    "C": {
+      "n_rows": 30103
+    },
+    "CH": {
+      "n_rows": 36902
+    }
+  },
+  "saved_models": {
+    "4F": {
+      "k": 10,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_4F_k10.joblib",
+      "n_train_rows": 97424
+    },
+    "2F": {
+      "k": 9,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_2F_k9.joblib",
+      "n_train_rows": 43211
+    },
+    "CF": {
+      "k": 8,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_CF_k8.joblib",
+      "n_train_rows": 19841
+    },
+    "S": {
+      "k": 9,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_S_k9.joblib",
+      "n_train_rows": 49863
+    },
+    "C": {
+      "k": 9,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_C_k9.joblib",
+      "n_train_rows": 30103
+    },
+    "CH": {
+      "k": 12,
+      "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_CH_k12.joblib",
+      "n_train_rows": 36902
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "bip_parquet": "/home/evangoforth03/Bayesian Research/data/statcast_pybaseball/twelve_hitters_bip_full_statcast.parquet",
+  "context_master": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/data_processed/sbi_context_event_master.parquet",
+  "bootstrap_pool": "statcast_bip_parquet",
+  "context_pool_rows": 24306,
+  "spray_angle_deg_limits": null,
+  "empirical_filter": "statcast_bip_parquet launch_speed/launch_angle + hc_x/hc_y spray",
+  "u_run_dir": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_u_given_g/20260407_193337Z",
+  "z_run_dir": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_z_given_u_g/20260501_055549Z",
+  "z_model_family": "hybrid_gauss_vonmises_trunc_ex",
+  "z_trunc_ex": true,
+  "value_model_dir": "/home/evangoforth03/Bayesian Research/outputs/batted_ball_value_surface",
+  "seed": 20260430,
+  "n_samples_per_context": 256,
+  "contexts_per_round": 8,
+  "min_admissible": 4000,
+  "max_admissible": 80000,
+  "physics_calibrator_path": "/home/evangoforth03/Bayesian Research/artifacts/physics_decoder_calibration/20260508_0418Z/ev_calibrator.joblib"
+}

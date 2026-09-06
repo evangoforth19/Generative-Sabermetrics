@@ -1,0 +1,1052 @@
+{
+  "parquet_paths": [
+    "data/statcast_pybaseball/statcast_all.parquet"
+  ],
+  "date_start": "2020-01-01",
+  "date_end": "2026-12-31",
+  "game_date_min_observed": "2020-07-23 00:00:00",
+  "game_date_max_observed": "2020-10-27 00:00:00",
+  "n_rows_mapped_to_pitch_groups": 277344,
+  "rows_dropped_missing_features_after_group_map": 1324,
+  "group_map": {
+    "4F": [
+      "FF",
+      "FA"
+    ],
+    "2F": [
+      "SI",
+      "FT"
+    ],
+    "CF": [
+      "FC"
+    ],
+    "S": [
+      "SL",
+      "ST"
+    ],
+    "C": [
+      "CU",
+      "KC",
+      "CS"
+    ],
+    "CH": [
+      "CH",
+      "FS"
+    ]
+  },
+  "pitch_type_counts_in_clean_sample": {
+    "FF": 97135,
+    "SL": 46080,
+    "SI": 43211,
+    "CH": 31784,
+    "CU": 22592,
+    "FC": 19841,
+    "KC": 7446,
+    "FS": 5118,
+    "ST": 3783,
+    "FA": 289,
+    "CS": 65
+  },
+  "features": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_spin_rate",
+    "spin_axis_sin",
+    "spin_axis_cos",
+    "release_speed"
+  ],
+  "covariance_type": "diag",
+  "groups": {
+    "4F": {
+      "n_rows": 97424,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 1935369.3506344126,
+          "bic": 1935502.1662245344,
+          "log_likelihood": -967670.6753172063,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 1814102.2687394216,
+          "bic": 1814377.3867475311,
+          "log_likelihood": -907022.1343697108,
+          "n_iter": 13,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 1743034.313338225,
+          "bic": 1743451.7337643222,
+          "log_likelihood": -871473.1566691125,
+          "n_iter": 16,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 1674026.8592332317,
+          "bic": 1674586.5820773167,
+          "log_likelihood": -836954.4296166159,
+          "n_iter": 20,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 1623843.118533875,
+          "bic": 1624545.1437959478,
+          "log_likelihood": -811847.5592669375,
+          "n_iter": 21,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 1619169.4582607637,
+          "bic": 1620013.785940824,
+          "log_likelihood": -809495.7291303818,
+          "n_iter": 22,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 1579340.0052491655,
+          "bic": 1580326.6353472136,
+          "log_likelihood": -789566.0026245827,
+          "n_iter": 15,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 1538997.289639147,
+          "bic": 1540126.2221551829,
+          "log_likelihood": -769379.6448195735,
+          "n_iter": 17,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 1505194.9823441294,
+          "bic": 1506466.217278153,
+          "log_likelihood": -752463.4911720647,
+          "n_iter": 17,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 1491374.4685728233,
+          "bic": 1492788.0059248346,
+          "log_likelihood": -745538.2342864117,
+          "n_iter": 21,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 1490577.847970683,
+          "bic": 1492133.687740682,
+          "log_likelihood": -745124.9239853414,
+          "n_iter": 24,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 1463693.284167238,
+          "bic": 1465391.4263552248,
+          "log_likelihood": -731667.642083619,
+          "n_iter": 27,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 1438537.1882534074,
+          "bic": 1440377.6328593818,
+          "log_likelihood": -719074.5941267037,
+          "n_iter": 30,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 1421356.656231082,
+          "bic": 1423339.4032550442,
+          "log_likelihood": -710469.328115541,
+          "n_iter": 22,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 1404177.6502030552,
+          "bic": 1406302.6996450052,
+          "log_likelihood": -701864.8251015276,
+          "n_iter": 33,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 1390071.3618862345,
+          "bic": 1392338.7137461721,
+          "log_likelihood": -694796.6809431172,
+          "n_iter": 34,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 1373286.8084800658,
+          "bic": 1375696.4627579912,
+          "log_likelihood": -686389.4042400329,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 1366849.856067909,
+          "bic": 1369401.812763822,
+          "log_likelihood": -683155.9280339545,
+          "n_iter": 26,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 1377128.5305459816,
+          "bic": 1379822.7896598824,
+          "log_likelihood": -688280.2652729908,
+          "n_iter": 21,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 1368314.2251790399,
+          "bic": 1371150.7867109284,
+          "log_likelihood": -683858.1125895199,
+          "n_iter": 27,
+          "converged": true
+        }
+      ]
+    },
+    "2F": {
+      "n_rows": 43211,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 858420.5429284825,
+          "bic": 858541.9768336829,
+          "log_likelihood": -429196.27146424126,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 801374.2150558515,
+          "bic": 801625.7567166236,
+          "log_likelihood": -400658.10752792575,
+          "n_iter": 3,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 748583.3408445946,
+          "bic": 748964.9902609384,
+          "log_likelihood": -374247.6704222973,
+          "n_iter": 20,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 719500.9275354292,
+          "bic": 720012.6847073447,
+          "log_likelihood": -359691.4637677146,
+          "n_iter": 15,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 717941.7538221622,
+          "bic": 718583.6187496494,
+          "log_likelihood": -358896.8769110811,
+          "n_iter": 15,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 695022.2929382623,
+          "bic": 695794.2656213213,
+          "log_likelihood": -347422.14646913117,
+          "n_iter": 18,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 682737.0347876083,
+          "bic": 683639.1152262391,
+          "log_likelihood": -341264.51739380416,
+          "n_iter": 47,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 673032.4532386907,
+          "bic": 674064.6414328932,
+          "log_likelihood": -336397.22661934537,
+          "n_iter": 17,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 650244.468038468,
+          "bic": 651406.7639882423,
+          "log_likelihood": -324988.234019234,
+          "n_iter": 43,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 646827.5164841026,
+          "bic": 648119.9201894485,
+          "log_likelihood": -323264.7582420513,
+          "n_iter": 28,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 635630.66979106,
+          "bic": 637053.1812519777,
+          "log_likelihood": -317651.33489553,
+          "n_iter": 33,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 620799.7084217059,
+          "bic": 622352.3276381952,
+          "log_likelihood": -310220.85421085294,
+          "n_iter": 27,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 611131.301649491,
+          "bic": 612814.028621552,
+          "log_likelihood": -305371.6508247455,
+          "n_iter": 22,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 607219.1126860192,
+          "bic": 609031.9474136521,
+          "log_likelihood": -303400.5563430096,
+          "n_iter": 26,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 600740.7948480581,
+          "bic": 602683.7373312628,
+          "log_likelihood": -300146.39742402907,
+          "n_iter": 24,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 596187.59984546,
+          "bic": 598260.6500842364,
+          "log_likelihood": -297854.79992273,
+          "n_iter": 29,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 591836.4845399708,
+          "bic": 594039.6425343188,
+          "log_likelihood": -295664.2422699854,
+          "n_iter": 28,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 581711.1937219637,
+          "bic": 584044.4594718835,
+          "log_likelihood": -290586.59686098184,
+          "n_iter": 36,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 577220.2227567033,
+          "bic": 579683.5962621948,
+          "log_likelihood": -288326.11137835163,
+          "n_iter": 23,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 572449.7557939817,
+          "bic": 575043.2370550451,
+          "log_likelihood": -285925.87789699086,
+          "n_iter": 24,
+          "converged": true
+        }
+      ]
+    },
+    "CF": {
+      "n_rows": 19841,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 394172.2328167356,
+          "bic": 394282.7698976947,
+          "log_likelihood": -197072.1164083678,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 344552.31893060164,
+          "bic": 344781.2885983027,
+          "log_likelihood": -172247.15946530082,
+          "n_iter": 12,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 325759.6076348155,
+          "bic": 326107.0098892585,
+          "log_likelihood": -162835.80381740775,
+          "n_iter": 27,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 320210.63627992105,
+          "bic": 320676.47112110595,
+          "log_likelihood": -160046.31813996052,
+          "n_iter": 34,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 308112.6131222441,
+          "bic": 308696.88055017084,
+          "log_likelihood": -153982.30656112204,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 301854.1837364755,
+          "bic": 302556.88375114417,
+          "log_likelihood": -150838.09186823774,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 300303.5287418432,
+          "bic": 301124.6613432538,
+          "log_likelihood": -150047.7643709216,
+          "n_iter": 29,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 290925.3055232151,
+          "bic": 291864.87071136764,
+          "log_likelihood": -145343.65276160755,
+          "n_iter": 41,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 290130.36849195213,
+          "bic": 291188.3662668466,
+          "log_likelihood": -144931.18424597607,
+          "n_iter": 46,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 288810.4803121826,
+          "bic": 289986.910673819,
+          "log_likelihood": -144256.2401560913,
+          "n_iter": 40,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 294324.19455487136,
+          "bic": 295619.05750324967,
+          "log_likelihood": -146998.09727743568,
+          "n_iter": 23,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 281266.4765479916,
+          "bic": 282679.7720831118,
+          "log_likelihood": -140454.2382739958,
+          "n_iter": 40,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 292430.9830112181,
+          "bic": 293962.7111330802,
+          "log_likelihood": -146021.49150560904,
+          "n_iter": 30,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 289996.40633276466,
+          "bic": 291646.5670413687,
+          "log_likelihood": -144789.20316638233,
+          "n_iter": 25,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 274185.78400999657,
+          "bic": 275954.3773053425,
+          "log_likelihood": -136868.89200499828,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 273705.3215721117,
+          "bic": 275592.34745419957,
+          "log_likelihood": -136613.66078605584,
+          "n_iter": 50,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 268398.5847090635,
+          "bic": 270404.0431778933,
+          "log_likelihood": -133945.29235453176,
+          "n_iter": 46,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 264581.53010072286,
+          "bic": 266705.4211562946,
+          "log_likelihood": -132021.76505036143,
+          "n_iter": 47,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 271405.7017840094,
+          "bic": 273648.02542632306,
+          "log_likelihood": -135418.8508920047,
+          "n_iter": 36,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 262728.24508059846,
+          "bic": 265089.001309654,
+          "log_likelihood": -131065.12254029923,
+          "n_iter": 48,
+          "converged": true
+        }
+      ]
+    },
+    "S": {
+      "n_rows": 49863,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 990563.4508815614,
+          "bic": 990686.8893648938,
+          "log_likelihood": -495267.7254407807,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 944774.3066429262,
+          "bic": 945030.0006441146,
+          "log_likelihood": -472358.1533214631,
+          "n_iter": 21,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 878232.1987600867,
+          "bic": 878620.1482791312,
+          "log_likelihood": -439072.09938004334,
+          "n_iter": 11,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 841392.4663382546,
+          "bic": 841912.6713751552,
+          "log_likelihood": -420637.2331691273,
+          "n_iter": 26,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 829102.7094203943,
+          "bic": 829755.169975151,
+          "log_likelihood": -414477.35471019713,
+          "n_iter": 20,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 809992.3098603865,
+          "bic": 810777.0259329993,
+          "log_likelihood": -404907.15493019327,
+          "n_iter": 38,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 786462.3640542888,
+          "bic": 787379.3356447577,
+          "log_likelihood": -393127.1820271444,
+          "n_iter": 37,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 782465.4048886125,
+          "bic": 783514.6319969374,
+          "log_likelihood": -391113.7024443062,
+          "n_iter": 33,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 767801.1620778737,
+          "bic": 768982.6447040548,
+          "log_likelihood": -383766.58103893686,
+          "n_iter": 28,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 766203.102444307,
+          "bic": 767516.8405883441,
+          "log_likelihood": -382952.5512221535,
+          "n_iter": 26,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 756600.1909992921,
+          "bic": 758046.1846611853,
+          "log_likelihood": -378136.09549964604,
+          "n_iter": 27,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 752690.0056353115,
+          "bic": 754268.2548150608,
+          "log_likelihood": -376166.00281765574,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 751893.8355868643,
+          "bic": 753604.3402844697,
+          "log_likelihood": -375752.91779343213,
+          "n_iter": 26,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 730196.6831731806,
+          "bic": 732039.443388642,
+          "log_likelihood": -364889.3415865903,
+          "n_iter": 44,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 727923.5863908905,
+          "bic": 729898.6021242081,
+          "log_likelihood": -363737.79319544527,
+          "n_iter": 45,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 720553.4505354392,
+          "bic": 722660.7217866129,
+          "log_likelihood": -360037.7252677196,
+          "n_iter": 48,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 728788.6163004271,
+          "bic": 731028.1430694569,
+          "log_likelihood": -364140.30815021356,
+          "n_iter": 51,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 699686.9066895372,
+          "bic": 702058.6889764231,
+          "log_likelihood": -349574.4533447686,
+          "n_iter": 51,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 712592.9377334166,
+          "bic": 715096.9755381586,
+          "log_likelihood": -356012.4688667083,
+          "n_iter": 34,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 701895.7031652861,
+          "bic": 704531.9964878841,
+          "log_likelihood": -350648.85158264305,
+          "n_iter": 43,
+          "converged": true
+        }
+      ]
+    },
+    "C": {
+      "n_rows": 30103,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 598028.2943643206,
+          "bic": 598144.6676859102,
+          "log_likelihood": -299000.1471821603,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 570088.6390983898,
+          "bic": 570329.6981216825,
+          "log_likelihood": -285015.3195491949,
+          "n_iter": 30,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 540360.7428230366,
+          "bic": 540726.4875480325,
+          "log_likelihood": -270136.3714115183,
+          "n_iter": 12,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 521747.82103221613,
+          "bic": 522238.25145891524,
+          "log_likelihood": -260814.91051610807,
+          "n_iter": 14,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 505420.0455592547,
+          "bic": 506035.161687657,
+          "log_likelihood": -252636.02277962735,
+          "n_iter": 18,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 496602.80832890066,
+          "bic": 497342.61015900614,
+          "log_likelihood": -248212.40416445033,
+          "n_iter": 18,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 484003.499673261,
+          "bic": 484867.9872050696,
+          "log_likelihood": -241897.7498366305,
+          "n_iter": 19,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 474663.29580891,
+          "bic": 475652.4690424218,
+          "log_likelihood": -237212.647904455,
+          "n_iter": 31,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 467083.6935156826,
+          "bic": 468197.5524508976,
+          "log_likelihood": -233407.8467578413,
+          "n_iter": 41,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 465574.9092143609,
+          "bic": 466813.453851279,
+          "log_likelihood": -232638.45460718044,
+          "n_iter": 27,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 454560.86782133824,
+          "bic": 455924.09815995954,
+          "log_likelihood": -227116.43391066912,
+          "n_iter": 45,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 447001.34937872505,
+          "bic": 448489.26541904954,
+          "log_likelihood": -223321.67468936252,
+          "n_iter": 43,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 446240.7499462557,
+          "bic": 447853.3516882833,
+          "log_likelihood": -222926.37497312785,
+          "n_iter": 37,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 439924.62774686364,
+          "bic": 441661.91519059445,
+          "log_likelihood": -219753.31387343182,
+          "n_iter": 51,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 435946.4958887305,
+          "bic": 437808.4690341645,
+          "log_likelihood": -217749.24794436526,
+          "n_iter": 29,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 428290.84356312774,
+          "bic": 430277.50241026486,
+          "log_likelihood": -213906.42178156387,
+          "n_iter": 35,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 430233.90837020206,
+          "bic": 432345.25291904237,
+          "log_likelihood": -214862.95418510103,
+          "n_iter": 44,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 427038.6525600448,
+          "bic": 429274.6828105883,
+          "log_likelihood": -213250.3262800224,
+          "n_iter": 32,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 420738.93659087754,
+          "bic": 423099.65254312416,
+          "log_likelihood": -210085.46829543877,
+          "n_iter": 39,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 416282.25600952486,
+          "bic": 418767.6576634747,
+          "log_likelihood": -207842.12800476243,
+          "n_iter": 47,
+          "converged": true
+        }
+      ]
+    },
+    "CH": {
+      "n_rows": 36902,
+      "aic_bic_by_k": [
+        {
+          "k": 1,
+          "aic": 733091.377823862,
+          "bic": 733210.6021182694,
+          "log_likelihood": -366531.688911931,
+          "n_iter": 2,
+          "converged": true
+        },
+        {
+          "k": 2,
+          "aic": 653670.6978290735,
+          "bic": 653917.6624389174,
+          "log_likelihood": -326806.34891453676,
+          "n_iter": 5,
+          "converged": true
+        },
+        {
+          "k": 3,
+          "aic": 634097.2226998417,
+          "bic": 634471.9276251222,
+          "log_likelihood": -317004.61134992086,
+          "n_iter": 23,
+          "converged": true
+        },
+        {
+          "k": 4,
+          "aic": 606165.089352037,
+          "bic": 606667.534592754,
+          "log_likelihood": -303023.5446760185,
+          "n_iter": 16,
+          "converged": true
+        },
+        {
+          "k": 5,
+          "aic": 587936.7964058346,
+          "bic": 588566.9819619881,
+          "log_likelihood": -293894.3982029173,
+          "n_iter": 22,
+          "converged": true
+        },
+        {
+          "k": 6,
+          "aic": 575228.8432807573,
+          "bic": 575986.7691523473,
+          "log_likelihood": -287525.42164037866,
+          "n_iter": 22,
+          "converged": true
+        },
+        {
+          "k": 7,
+          "aic": 560903.4759580446,
+          "bic": 561789.1421450712,
+          "log_likelihood": -280347.7379790223,
+          "n_iter": 19,
+          "converged": true
+        },
+        {
+          "k": 8,
+          "aic": 549618.396139585,
+          "bic": 550631.8026420481,
+          "log_likelihood": -274690.1980697925,
+          "n_iter": 36,
+          "converged": true
+        },
+        {
+          "k": 9,
+          "aic": 540911.4175891227,
+          "bic": 542052.5644070223,
+          "log_likelihood": -270321.70879456133,
+          "n_iter": 31,
+          "converged": true
+        },
+        {
+          "k": 10,
+          "aic": 532768.8432164278,
+          "bic": 534037.730349764,
+          "log_likelihood": -266235.4216082139,
+          "n_iter": 31,
+          "converged": true
+        },
+        {
+          "k": 11,
+          "aic": 524874.837430342,
+          "bic": 526271.4648791146,
+          "log_likelihood": -262273.418715171,
+          "n_iter": 24,
+          "converged": true
+        },
+        {
+          "k": 12,
+          "aic": 517400.19356340123,
+          "bic": 518924.56132761046,
+          "log_likelihood": -258521.09678170062,
+          "n_iter": 42,
+          "converged": true
+        },
+        {
+          "k": 13,
+          "aic": 517427.1286810451,
+          "bic": 519079.23676069087,
+          "log_likelihood": -258519.56434052254,
+          "n_iter": 21,
+          "converged": true
+        },
+        {
+          "k": 14,
+          "aic": 505788.91484508396,
+          "bic": 507568.76324016624,
+          "log_likelihood": -252685.45742254198,
+          "n_iter": 35,
+          "converged": true
+        },
+        {
+          "k": 15,
+          "aic": 504261.3464568046,
+          "bic": 506168.9351673234,
+          "log_likelihood": -251906.6732284023,
+          "n_iter": 43,
+          "converged": true
+        },
+        {
+          "k": 16,
+          "aic": 498324.9481452909,
+          "bic": 500360.27717124624,
+          "log_likelihood": -248923.47407264545,
+          "n_iter": 36,
+          "converged": true
+        },
+        {
+          "k": 17,
+          "aic": 498261.84035192465,
+          "bic": 500424.9096933165,
+          "log_likelihood": -248876.92017596232,
+          "n_iter": 33,
+          "converged": true
+        },
+        {
+          "k": 18,
+          "aic": 488328.2260125561,
+          "bic": 490619.0356693845,
+          "log_likelihood": -243895.11300627806,
+          "n_iter": 35,
+          "converged": true
+        },
+        {
+          "k": 19,
+          "aic": 479629.81376550515,
+          "bic": 482048.36373777007,
+          "log_likelihood": -239530.90688275258,
+          "n_iter": 45,
+          "converged": true
+        },
+        {
+          "k": 20,
+          "aic": 480738.01464086084,
+          "bic": 483284.3049285623,
+          "log_likelihood": -240070.00732043042,
+          "n_iter": 28,
+          "converged": true
+        }
+      ]
+    }
+  }
+}

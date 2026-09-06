@@ -1,0 +1,5 @@
+{
+  "value_mode": "lightgbm",
+  "value_bundle_path": "/home/evangoforth03/Bayesian Research/outputs/batted_ball_value_surface",
+  "surrogate_path": "/home/evangoforth03/Bayesian Research/Robustness Simulator/runs_calibrated_20260508/artifacts/value_hgb_surrogate.pkl"
+}

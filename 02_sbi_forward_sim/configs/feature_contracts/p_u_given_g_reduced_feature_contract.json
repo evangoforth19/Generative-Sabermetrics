@@ -1,0 +1,54 @@
+{
+  "contract_id": "p_u_given_g_stage_u_reduced_v1",
+  "description": "Reduced-input stage-u feature contract for p(u|g): count/location/release speed plus pitch and batter identity only.",
+  "targets": [
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "numeric_features": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_speed"
+  ],
+  "player_constant_features": [],
+  "x_numeric_zscore_column_order": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_speed"
+  ],
+  "categorical_yaml_key_order": [
+    "batter_name",
+    "pitch_type"
+  ],
+  "categorical_model_forward_order_alphabetical": [
+    "batter_name",
+    "pitch_type"
+  ],
+  "categorical_features": {
+    "batter_name": {
+      "embedding_dim": 16,
+      "vocab_size": 13
+    },
+    "pitch_type": {
+      "embedding_dim": 8,
+      "vocab_size": 17
+    }
+  },
+  "weight_column": "combined_training_weight",
+  "standardization_stats_relpath": "manifests/standardization_stats.json",
+  "preprocessing_stats_must_contain": [
+    "z_count",
+    "plate_x",
+    "plate_z",
+    "release_speed",
+    "v_ss_tilde",
+    "a_tilde",
+    "d_tilde"
+  ],
+  "player_constants_must_not_be_in_preprocessing_stats": true,
+  "player_constant_standardization_note": "No player constants are tensorized for this reduced-input p(u|g) contract.",
+  "release_speed_semantics": "Merged Statcast column release_speed only; do not substitute velocity norms or vx0/vy0/vz0 blocks."
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "20260407_193337Z",
+  "note": "run_manifest backfilled after train completed but eval step failed originally; metrics/plots from 20260407 follow-up evaluate_p_u_given_g.py",
+  "config_path": "sbi_forward_sim/configs/p_u_given_g_native_circular.yaml",
+  "head_family": "shared_gaussian_vm_d",
+  "covariance_temperature_T_va": 1.1972187757492065,
+  "angular_temperature_T_ang": 0.824528157711029,
+  "nll_calibration_weighted_pre_temp": 2.3388631562693454,
+  "nll_calibration_weighted_post_temp": 2.3258577624100756,
+  "nll_test_weighted_post_temp": 2.3843780404231256,
+  "train_meta_keys": []
+}

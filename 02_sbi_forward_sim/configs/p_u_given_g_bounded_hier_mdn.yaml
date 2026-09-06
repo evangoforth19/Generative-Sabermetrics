@@ -1,0 +1,104 @@
+# Stage-u: bounded logit-zscore (v_ss, a) + hierarchical player pooling + shared VM mixture on d_tilde.
+# Does not replace shared_gaussian_vm_d; writes to a new timestamped outputs/p_u_given_g/<stamp>/.
+
+paths:
+  u_train: "data_processed/u_train.parquet"
+  u_calibration: "data_processed/u_calibration.parquet"
+  u_test: "data_processed/u_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_u_given_g_feature_contract.json"
+
+targets:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_spin_rate
+  - spin_axis_sin
+  - spin_axis_cos
+  - release_speed
+
+player_constant_features:
+  - bat_length_in
+  - bat_weight_oz
+  - x_cm_fixed_in
+  - r_g_fixed_in
+  - I0_oz_in2
+  - Iz_oz_in2
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+  stand: { embedding_dim: 4 }
+  p_throws: { embedding_dim: 4 }
+
+weight_column: "combined_training_weight"
+
+target_transform:
+  va_transform: bounded_logit_zscore
+  eps: 1.0e-5
+  bounds:
+    v_ss_tilde: [30.0, 100.0]
+    a_tilde: [-60.0, 60.0]
+  out_of_bounds_policy: clip_and_report
+
+model:
+  head_family: bounded_hier_shared_gaussian_vm_d
+  n_mixture_components: 6
+  hidden_width: 64
+  hidden_layers: 2
+  activation: tanh
+  player_embedding_dim: 8
+  player_effect_scale: 1.0
+  kappa_floor: 1.0e-3
+  kappa_max: 120.0
+
+covariance:
+  chol_eps: 1.0e-4
+  diag_floor: 0.05
+  diag_ceiling: 5.0
+  use_diag_ceiling: true
+
+regularization:
+  optimizer_weight_decay: 3.0e-4
+  lambda_player_embedding_l2: 1.0e-3
+  lambda_player_adapter_l2: 1.0e-4
+  lambda_cholesky_offdiag_l2: 1.0e-4
+  lambda_log_scale_l2: 1.0e-5
+  lambda_mixture_entropy: 0.0
+  report_effective_components: true
+
+training:
+  seed: 44
+  max_epochs: 120
+  early_stopping_patience: 16
+  early_stopping_metric: calibration_weighted_nll
+  lr: 8.0e-4
+  weight_decay: 3.0e-4
+  dropout: 0.0
+  batch_events: 64
+  max_draws_per_event: 16
+  grad_clip: 5.0
+  eval_calibration_every: 1
+
+calibration:
+  fit_temperatures: true
+  max_iter: 600
+  lr: 0.05
+
+evaluation:
+  n_mc_coverage_draws_d: 256
+  report_raw_space_nll_with_jacobian: true
+  report_model_space_nll: true
+  report_player_diagnostics: true
+  report_mixture_diagnostics: true
+  report_covariance_diagnostics: true
+
+outputs:
+  run_dir: "outputs/p_u_given_g"

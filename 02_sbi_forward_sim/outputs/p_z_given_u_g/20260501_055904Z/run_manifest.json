@@ -1,0 +1,26 @@
+{
+  "timestamp_utc": "20260501_055904Z",
+  "git_hash": null,
+  "config_path": "/home/evangoforth03/Bayesian Research/MCMC 2/sbi_forward_sim/outputs/p_z_given_u_g/20260501_055904Z/config_resolved.yaml",
+  "feature_contract_id": "p_z_given_u_g_stage_z_v3_trunc_ex",
+  "target_parameterization": "native_trunc_ex_vm",
+  "model_family": "hybrid_gauss_vonmises_trunc_ex",
+  "row_counts": {
+    "n_rows_train": 1074750,
+    "n_rows_cal": 228000,
+    "n_rows_test": 232250
+  },
+  "event_counts": {
+    "n_events_train": 4299,
+    "n_events_cal": 912,
+    "n_events_test": 929
+  },
+  "temperature_T_gauss": 1.004640817642212,
+  "temperature_T_ang": 0.6730289459228516,
+  "z_targets": [
+    "x",
+    "psi_deg",
+    "e_y_star",
+    "e_x"
+  ]
+}

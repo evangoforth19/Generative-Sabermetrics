@@ -1,0 +1,6 @@
+{
+  "T_va": 1.2202284336090088,
+  "T_ang": 0.8091964721679688,
+  "note": "(v_ss,a): scale_tril *= sqrt(T_va); von Mises: kappa_cal = kappa / T_ang",
+  "head_family": "shared_gaussian_vm_d"
+}

@@ -1,0 +1,3 @@
+cluster_global_id,label,n,pct_x_in_26_32,pct_psi_in_neg10_10
+9,best_cluster_9,20000,64.2,26.145000000000003
+15,worst_cluster_15,20000,58.285,35.585

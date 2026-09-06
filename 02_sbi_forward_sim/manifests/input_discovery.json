@@ -1,0 +1,409 @@
+{
+  "production_root": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production",
+  "sources": [
+    {
+      "logical_name": "selected_events",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/selected_events.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "context_event_table",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/aggregates/context_event_table.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "event_quality_flags",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/aggregates/event_quality_flags.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "chain_diagnostics",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/aggregates/chain_diagnostics.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "posterior_draws_long_raw",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/posterior_draws_long_raw.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "posterior_draws_long_basic",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/posterior_draws_long_basic_screened.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "posterior_draws_long_strict",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/posterior_draws_long_strict_screened.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "context_to_latent",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/context_to_latent_train.csv",
+      "format": "csv",
+      "exists": true,
+      "note": "parquet missing; CSV fallback"
+    },
+    {
+      "logical_name": "context_to_upstream",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/context_to_upstream_train.csv",
+      "format": "csv",
+      "exists": true,
+      "note": "parquet missing; CSV fallback"
+    },
+    {
+      "logical_name": "context_upstream_latent_joint",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/context_upstream_latent_joint_train.csv",
+      "format": "csv",
+      "exists": true,
+      "note": "parquet missing; CSV fallback"
+    },
+    {
+      "logical_name": "event_level_targets",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/event_level_targets.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "feature_schema",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/feature_schema.json",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "preprocessing_artifacts",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/preprocessing_artifacts.json",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "split_manifest_production",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/train_exports/split_manifest.json",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    },
+    {
+      "logical_name": "observed_inference_pack",
+      "resolved_path": "/home/evangoforth03/Bayesian Research/MCMC 2/Outputs/refactor_exact_root_rhh/production/calibration_exports/observed_inference_pack.parquet",
+      "format": "parquet",
+      "exists": true,
+      "note": ""
+    }
+  ],
+  "extra": {
+    "release_speed_source": "derived_sqrt_vx0_vy0_vz0_ft_s_to_mph_no_statcast_pickle",
+    "context_rows_before_bip_filter": 6654,
+    "context_rows_after_bip_filter": 6654,
+    "z_theta_row_stats_raw": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 1535000
+    },
+    "z_theta_provenance_raw": "Per draw: `theta_deg` = finite `theta_star_deg` if available, else `theta_obs_deg` from `launch_angle_obs_deg`; never `phi_star`.",
+    "z_theta_row_stats_basic": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 1535000
+    },
+    "z_theta_provenance_basic": "Per draw: `theta_deg` = finite `theta_star_deg` if available, else `theta_obs_deg` from `launch_angle_obs_deg`; never `phi_star`.",
+    "z_theta_row_stats_strict": {
+      "canonical_column": "theta_deg",
+      "n_rows_from_theta_star_deg": 0,
+      "n_rows_from_theta_obs_deg": 9500
+    },
+    "z_theta_provenance_strict": "Per draw: `theta_deg` = finite `theta_star_deg` if available, else `theta_obs_deg` from `launch_angle_obs_deg`; never `phi_star`.",
+    "draw_rows_raw_after_bip_event_filter": 1535000,
+    "draw_rows_basic_after_bip_event_filter": 1535000,
+    "draw_rows_strict_after_bip_event_filter": 9500,
+    "draw_rows_raw_final": 1535000,
+    "draw_rows_basic_final": 1535000,
+    "draw_rows_strict_final": 9500,
+    "z_theta_launch_column": "theta_deg",
+    "z_theta_provenance": "Per draw: `theta_deg` = finite `theta_star_deg` if available, else `theta_obs_deg` from `launch_angle_obs_deg`; never `phi_star`.",
+    "z_theta_row_stats": {
+      "basic": {
+        "canonical_column": "theta_deg",
+        "n_rows_from_theta_star_deg": 0,
+        "n_rows_from_theta_obs_deg": 1535000
+      },
+      "strict": {
+        "canonical_column": "theta_deg",
+        "n_rows_from_theta_star_deg": 0,
+        "n_rows_from_theta_obs_deg": 9500
+      },
+      "raw": {
+        "canonical_column": "theta_deg",
+        "n_rows_from_theta_star_deg": 0,
+        "n_rows_from_theta_obs_deg": 1535000
+      }
+    },
+    "z_screen_choice": "basic_screened_primary",
+    "z_strict_archival": "z_strict_{train,calibration,test}.parquet from draws_strict_s",
+    "g_columns_resolved": [
+      "z_count",
+      "release_speed",
+      "release_spin_rate",
+      "spin_axis_sin",
+      "spin_axis_cos",
+      "plate_x",
+      "plate_z",
+      "pitch_type",
+      "stand",
+      "p_throws",
+      "vx0",
+      "vy0",
+      "vz0",
+      "ax",
+      "ay",
+      "az"
+    ],
+    "p_columns_resolved": [],
+    "u_columns_resolved": [
+      "v_ss_tilde",
+      "a_tilde",
+      "d_tilde"
+    ],
+    "z_columns_resolved": [
+      "x",
+      "psi_deg",
+      "e_y_star",
+      "theta_deg",
+      "e_x"
+    ],
+    "z_theta_resolution": {},
+    "feature_schema_production": {
+      "categorical_columns": [
+        "batter_name",
+        "pitch_type",
+        "stand",
+        "p_throws",
+        "split",
+        "regime_label"
+      ],
+      "column_roles": {
+        "latent": [
+          "x",
+          "psi",
+          "e_x",
+          "e_y_star",
+          "omega_plus"
+        ],
+        "observed_context": [
+          "event_id",
+          "batter_name",
+          "pitch_type",
+          "plate_x",
+          "plate_z",
+          "release_spin_rate",
+          "spin_axis",
+          "balls",
+          "strikes",
+          "stand",
+          "p_throws",
+          "vx0",
+          "vy0",
+          "vz0",
+          "ax",
+          "ay",
+          "az"
+        ],
+        "transformed_upstream": [
+          "a_tilde",
+          "d_tilde",
+          "v_ss_tilde",
+          "delta_star"
+        ],
+        "weights": [
+          "uniform_draw_weight_within_event",
+          "event_quality_weight",
+          "normalized_log_target_weight",
+          "combined_training_weight"
+        ]
+      },
+      "context_features": [
+        "event_id",
+        "batter_name",
+        "pitch_type",
+        "plate_x",
+        "plate_z",
+        "release_spin_rate",
+        "spin_axis",
+        "balls",
+        "strikes",
+        "stand",
+        "p_throws",
+        "vx0",
+        "vy0",
+        "vz0",
+        "ax",
+        "ay",
+        "az"
+      ],
+      "continuous_columns": [
+        "x",
+        "e_y_star",
+        "log_prior_measurement",
+        "log_prior_e_y",
+        "log_prior_x",
+        "log_prior_ex",
+        "log_target",
+        "root_exists",
+        "admissible",
+        "accepted_physics",
+        "branch_idx",
+        "v_coll_mph",
+        "v_coll_fps",
+        "vx_bat_mph",
+        "vy_bat_mph",
+        "vz_bat_mph",
+        "vB_r",
+        "vB_t",
+        "vb_r",
+        "vb_t",
+        "Delta_n",
+        "Delta_t",
+        "A",
+        "B",
+        "lambda_x",
+        "r_y_x",
+        "r_x_x",
+        "psi_root_deg",
+        "psi",
+        "psi_deg",
+        "psi_rad",
+        "psi_rel_deg",
+        "psi_rel_relkin_deg",
+        "psi_rel_minus_psi_root_deg",
+        "vB_n_minus",
+        "vB_t_minus",
+        "vb_n",
+        "vrel_n_minus",
+        "vrel_t_minus",
+        "Vn_plus",
+        "Vt_plus",
+        "Vn_plus_obs",
+        "Vt_plus_obs",
+        "vt_over_vn_abs",
+        "D",
+        "D_in",
+        "R_loc_in",
+        "Ft_denom",
+        "Fw_denom",
+        "raw_e_x",
+        "e_x",
+        "omega_plus",
+        "d_n",
+        "d_t",
+        "failed_stage_1_root",
+        "failed_stage_2_support",
+        "failed_stage_3_admissibility",
+        "failed_stage_4_downstream",
+        "true_numerical_failure",
+        "hard_reject_before_Ft",
+        "hard_reject_before_log_target",
+        "phi_star",
+        "delta_star",
+        "d_tilde",
+        "a_tilde",
+        "v_ss_tilde",
+        "attack_direction_obs_star",
+        "attack_angle_obs_star",
+        "bat_speed_obs_star",
+        "spray_angle_obs_deg",
+        "attack_direction_obs_deg",
+        "attack_angle_obs_deg",
+        "bat_speed_obs_mph",
+        "exit_speed_obs_mph",
+        "launch_angle_obs_deg",
+        "log_q_proposal",
+        "init_attempt_index",
+        "iter",
+        "chain_id",
+        "proposal_index",
+        "accepted_draw",
+        "accepted_move",
+        "abs_vt_over_vn",
+        "plate_x",
+        "plate_z",
+        "release_spin_rate",
+        "spin_axis",
+        "balls",
+        "strikes",
+        "vx0",
+        "vy0",
+        "vz0",
+        "ax",
+        "ay",
+        "az",
+        "event_quality_score",
+        "event_reliability_weight",
+        "x_near_support_flag",
+        "psi_near_support_flag",
+        "e_y_near_bound_flag",
+        "poor_mixing_flag",
+        "n_draws_event",
+        "uniform_draw_weight_within_event",
+        "normalized_log_target_weight",
+        "event_quality_weight",
+        "combined_training_weight",
+        "draw_basic_screen_pass",
+        "draw_strict_screen_pass",
+        "event_basic_screen_pass",
+        "event_strict_screen_pass"
+      ],
+      "latent_targets": [
+        "x",
+        "psi",
+        "e_x",
+        "e_y_star",
+        "omega_plus"
+      ],
+      "units": {
+        "e_x": "unitless",
+        "e_y_star": "unitless",
+        "omega_plus": "rad/s",
+        "psi": "deg",
+        "v_coll": "mph",
+        "vx_bat": "mph",
+        "vy_bat": "mph",
+        "vz_bat": "mph",
+        "x": "in"
+      },
+      "upstream_features": [
+        "a_tilde",
+        "d_tilde",
+        "v_ss_tilde",
+        "delta_star"
+      ]
+    },
+    "split_manifest_production": {
+      "counts": {
+        "test": 230250,
+        "train": 1074500,
+        "val": 230250
+      },
+      "group_splits_by": "event",
+      "split_seed": 20260409,
+      "test_frac": 0.15,
+      "train_frac": 0.7,
+      "val_frac": 0.15
+    }
+  }
+}

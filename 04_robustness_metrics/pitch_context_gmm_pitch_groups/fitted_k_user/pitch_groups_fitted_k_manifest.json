@@ -1,0 +1,32 @@
+{
+  "4F": {
+    "k": 10,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_4F_k10.joblib",
+    "n_train_rows": 97424
+  },
+  "2F": {
+    "k": 9,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_2F_k9.joblib",
+    "n_train_rows": 43211
+  },
+  "CF": {
+    "k": 8,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_CF_k8.joblib",
+    "n_train_rows": 19841
+  },
+  "S": {
+    "k": 9,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_S_k9.joblib",
+    "n_train_rows": 49863
+  },
+  "C": {
+    "k": 9,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_C_k9.joblib",
+    "n_train_rows": 30103
+  },
+  "CH": {
+    "k": 12,
+    "path": "outputs/pitch_context_gmm_pitch_groups/fitted_k_user/pitch_group_CH_k12.joblib",
+    "n_train_rows": 36902
+  }
+}

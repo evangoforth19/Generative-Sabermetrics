@@ -1,0 +1,8 @@
+{
+  "n_hitters": 12,
+  "n_clusters": 57,
+  "min_admissible": 1200,
+  "max_admissible": 8000,
+  "decoder": "lenient",
+  "physics_calibrator_path": null
+}

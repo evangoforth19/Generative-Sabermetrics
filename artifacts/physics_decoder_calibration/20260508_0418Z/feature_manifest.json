@@ -1,0 +1,36 @@
+{
+  "numeric_features": [
+    "EV_dec_mean",
+    "EV_dec_std",
+    "EV_dec_p05",
+    "EV_dec_p10",
+    "EV_dec_p25",
+    "EV_dec_p50",
+    "EV_dec_p75",
+    "EV_dec_p90",
+    "EV_dec_p95",
+    "EV_dec_p99",
+    "n_draws",
+    "z_count",
+    "release_speed",
+    "spin_rate",
+    "release_spin_rate",
+    "spin_axis",
+    "plate_x",
+    "plate_z",
+    "balls",
+    "strikes"
+  ],
+  "categorical_features": [
+    "pitch_type",
+    "batter_hand",
+    "stand",
+    "pitcher_hand",
+    "p_throws"
+  ],
+  "rho": 0.85,
+  "cap": 121.0,
+  "tau": 2.0,
+  "ev_col": "EV",
+  "group_col": "event_id"
+}

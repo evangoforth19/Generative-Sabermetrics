@@ -1,0 +1,87 @@
+# Experiment C: K=10 with same long training as B; optional calibration max_iter bump.
+
+paths:
+  z_train: "data_processed/z_train.parquet"
+  z_calibration: "data_processed/z_calibration.parquet"
+  z_test: "data_processed/z_test.parquet"
+  context_master: "data_processed/sbi_context_event_master.parquet"
+  standardization_stats: "manifests/standardization_stats.json"
+  event_split_table: "data_processed/event_split_table.parquet"
+  feature_contract: "configs/feature_contracts/p_z_given_u_g_feature_contract.json"
+  joint_train: "data_processed/joint_train.parquet"
+
+targets:
+  - x
+  - psi_deg
+  - e_y_star
+  - theta_deg
+
+upstream_u_features:
+  - v_ss_tilde
+  - a_tilde
+  - d_tilde
+
+numeric_context_features:
+  - z_count
+  - plate_x
+  - plate_z
+  - release_spin_rate
+  - spin_axis_sin
+  - spin_axis_cos
+  - release_speed
+
+player_constant_features:
+  - bat_length_in
+  - bat_weight_oz
+  - x_cm_fixed_in
+  - r_g_fixed_in
+  - I0_oz_in2
+  - Iz_oz_in2
+
+categorical_features:
+  batter_name: { embedding_dim: 16 }
+  pitch_type: { embedding_dim: 8 }
+  stand: { embedding_dim: 4 }
+  p_throws: { embedding_dim: 4 }
+
+weight_column: "combined_training_weight"
+
+target_parameterization: "circular_6d"
+
+eval:
+  n_predictive_samples: 256
+  circular_eval_batch_size: 512
+
+experiment:
+  sweep_id: "C_k10_long"
+  linear_baseline_run_dir: "outputs/p_z_given_u_g/20260407_182641Z"
+  reference_circular_canonical: "outputs/p_z_given_u_g/20260407_183758Z"
+
+training:
+  seed: 42
+  max_epochs: 55
+  early_stopping_patience: 10
+  early_stopping_metric: "calibration_weighted_nll"
+  lr: 0.001
+  weight_decay: 0.0001
+  dropout: 0.0
+  batch_events: 64
+  max_draws_per_event: 16
+  grad_clip: 5.0
+  eval_calibration_every: 1
+
+model:
+  family: "full_cov_chol_gmm_circular6"
+  z_dim: 6
+  n_components: 10
+  hidden_width: 64
+  hidden_layers: 2
+  activation: "tanh"
+  chol_eps: 1.0e-5
+
+calibration:
+  max_iter: 600
+  lr: 0.05
+
+outputs:
+  run_dir: "outputs/p_z_given_u_g"
